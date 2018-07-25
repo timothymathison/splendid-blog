@@ -1,0 +1,17 @@
+{
+  "name": "splendid-blog",
+  "version": "1.0.0",
+  "description": "Using ReactJS and Express for NodeJS to create a dynamic blog website from which April Mathison can express her thoughts and creativity! ",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timothymathison/splendid-blog.git"
+  },
+  "author": "Timothy Mathison",
+  "bugs": {
+    "url": "https://github.com/timothymathison/splendid-blog/issues"
+  },
+  "homepage": "https://github.com/timothymathison/splendid-blog#readme"
+}
