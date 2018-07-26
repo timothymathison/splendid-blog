@@ -1,6 +1,6 @@
 {
   "name": "splendid-blog",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Using ReactJS and Express for NodeJS to create a dynamic blog website from which April Mathison can express her thoughts and creativity! ",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
