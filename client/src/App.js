@@ -5,6 +5,7 @@ import './styles/App.css';
 
 import Home from './pages/home';
 import About from './pages/about';
+import Posts from './pages/posts'
 
 const App = () => (
     <Router>
@@ -14,6 +15,7 @@ const App = () => (
             <Route exact path='/' render={() => (
                 <Redirect to="/home"/>
             )}/>
+            <Route path='/posts' component={Posts}/>
         </div>
     </Router>
 );

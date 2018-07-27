@@ -3,7 +3,17 @@
   "version": "0.1.0",
   "description": "Using ReactJS and Express for NodeJS to create a dynamic blog website from which April Mathison can express her thoughts and creativity! ",
   "scripts": {
+    "start": "concurrently \"npm:server\" \"npm:client\"",
+    "server": "node server.js",
+    "client": "cd client && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "claudia": "^5.1.0",
+    "concurrently": "^3.6.1"
   },
   "repository": {
     "type": "git",
