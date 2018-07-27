@@ -1,16 +1,21 @@
-import React, { Component } from 'react';
-import { Router, Route, Link, IndexRoute, browserHistory } from 'react-router'
+import React from 'react';
+import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom'
 
 import './styles/App.css';
 
-import home from './pages/home'
-import about from './pages/about'
+import Home from './pages/home';
+import About from './pages/about';
 
-const app = () => (
-    <Router history={browserHistory}>
-        <Route path='/' component={home} />
-        <Route path='/about' component={about} />
+const App = () => (
+    <Router>
+        <div>
+            <Route path='/home' component={Home} />
+            <Route path='/about' component={About} />
+            <Route exact path='/' render={() => (
+                <Redirect to="/home"/>
+            )}/>
+        </div>
     </Router>
 );
 
-export default app;
+export default App;
