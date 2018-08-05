@@ -5,7 +5,7 @@ class Posts extends Component {
         super(props);
 
         this.callBackendAPI()
-            .then(res => console.log({ data: res.msg }))
+            .then(res => console.log({ data: res.msg, info: res.envValues }))
             .catch(err => console.error(err));
     }
 

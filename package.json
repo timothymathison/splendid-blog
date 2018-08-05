@@ -1,15 +1,29 @@
 {
   "name": "splendid-blog",
   "version": "0.1.0",
-  "description": "Using ReactJS and Express for NodeJS to create a dynamic blog website from which April Mathison can express her thoughts and creativity! ",
+  "description": "Uses ReactJS and Express for NodeJS to create a dynamic blog website from which April Mathison can express her thoughts and creativity!",
+  "main": "lambda.js",
+  "files": [
+    "server.js",
+    "client/build/"
+  ],
   "scripts": {
+    "test-pack": "claudia pack",
+    "init-lambda": "claudia generate-serverless-express-proxy --express-module server",
+    "deploy-lambda": "claudia create --handler lambda.handler --timeout 20 --deploy-proxy-api --region us-east-2 --no-optional-dependencies --role splendid-blog-lambda --version production --set-env-from-json production.env.json",
+    "deploy-update": "cd client && npm run build && cd ../ && claudia update --version production --no-optional-dependencies --update-env-from-json production.env.json",
     "start": "concurrently \"npm:server\" \"npm:client\"",
-    "server": "node server.js",
+    "server": "node server.local.js",
     "client": "cd client && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "aws-serverless-express": "^3.2.0",
     "express": "^4.16.3"
+  },
+  "optionalDependencies": {
+    "aws-sdk": "^2.286.2",
+    "dotenv": "^6.0.0"
   },
   "devDependencies": {
     "claudia": "^5.1.0",
