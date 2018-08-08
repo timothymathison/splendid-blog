@@ -7,8 +7,10 @@ import Home from './pages/home';
 import About from './pages/about';
 import Posts from './pages/posts'
 
+const basePath = process.env.PUBLIC_URL;
+
 const App = () => (
-    <Router>
+    <Router basename={basePath}>
         <Switch>
             <Route path='/home' component={Home} />
             <Route path='/about' component={About} />

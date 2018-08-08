@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+const basePath = process.env.PUBLIC_URL;
+
 class Posts extends Component {
     constructor(props) {
         super(props);
@@ -10,7 +12,7 @@ class Posts extends Component {
     }
 
     callBackendAPI = async () => {
-        const response = await fetch('/api');
+        const response = await fetch(`${basePath}/api`);
         const body = await response.json();
 
         if (response.status !== 200) {
