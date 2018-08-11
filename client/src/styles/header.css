@@ -1,0 +1,20 @@
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 4em;
+    background-color: #222222;
+}
+
+ul.inline-nav {
+    margin: 0.5em 0;
+}
+
+ul.inline-nav li {
+    display: inline-block;
+}
+
+ul.inline-nav a {
+    text-decoration: none;
+    color: white;
+}
