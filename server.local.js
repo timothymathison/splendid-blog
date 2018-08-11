@@ -1,10 +1,13 @@
-const server = require('./server.js');
+const envLoader = require('dotenv-json');
 
+const server = require('./server.js');
 const port = process.env.PORT || 4000;
 
 // load development environment variables
 if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').load();
+    envLoader({ path: ".env.development.json"});
+} else {
+    envLoader({ path: ".env.production.json"})
 }
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
