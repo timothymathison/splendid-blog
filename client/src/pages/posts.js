@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 
-import Header from '../components/header.js'
-
 const basePath = process.env.PUBLIC_URL;
 
 class Posts extends Component {
@@ -26,7 +24,6 @@ class Posts extends Component {
     render() {
         return(
             <div className={"body"}>
-                <Header />
                 <h1>Posts page</h1>
             </div>
         );
