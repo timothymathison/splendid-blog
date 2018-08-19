@@ -2,10 +2,9 @@ const path = require('path');
 const express = require('express');
 const server = express();
 
-// create a GET route
-server.get('/api', (req, res) => {
-    res.send({ msg: "Hello from express app", envValues: process.env });
-});
+const api = require('./routes/api')
+
+server.use('/api', api);
 
 if (process.env.NODE_ENV === 'production') {
     // Serve any static files

@@ -5,8 +5,9 @@ import './styles/App.css';
 
 import Home from './pages/home';
 import About from './pages/about';
-import Posts from './pages/posts'
-import Header from './components/header'
+import Posts from './pages/posts';
+import NotFound from './pages/notfound'
+import Header from './components/header';
 
 const basePath = process.env.PUBLIC_URL;
 
@@ -15,12 +16,13 @@ const App = () => (
         <div className="page">
             <Header />
             <Switch>
-                <Route path='/home' component={Home} />
-                <Route path='/about' component={About} />
                 <Route exact path='/' render={() => (
                     <Redirect to="/home"/>
                 )}/>
-                <Route path='/posts' component={Posts}/>
+                <Route path='/home' component={Home} />
+                <Route path='/about' component={About} />
+                <Route path='/posts' component={Posts} />
+                <Route component={NotFound} />
             </Switch>
         </div>
     </Router>

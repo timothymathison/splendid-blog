@@ -1,25 +1,15 @@
 import React, {Component} from 'react';
 
-const basePath = process.env.PUBLIC_URL;
+import api from '../utils/api'
 
 class Posts extends Component {
     constructor(props) {
         super(props);
 
-        this.callBackendAPI()
-            .then(res => console.log({ data: res.msg, info: res.envValues }))
+        api.load("ping") //for api testing
+            .then(result => console.log({ data: result.msg, info: result.envValues }))
             .catch(err => console.error(err));
     }
-
-    callBackendAPI = async () => {
-        const response = await fetch(`${basePath}/api`);
-        const body = await response.json();
-
-        if (response.status !== 200) {
-            throw Error(body.message)
-        }
-        return body;
-    };
 
     render() {
         return(
