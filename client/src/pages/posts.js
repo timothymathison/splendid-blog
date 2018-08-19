@@ -6,9 +6,7 @@ class Posts extends Component {
     constructor(props) {
         super(props);
 
-        api.load("ping") //for api testing
-            .then(result => console.log({ data: result.msg, info: result.envValues }))
-            .catch(err => console.error(err));
+        api.load("ping", (result) => console.log({ data: result.msg, info: result.envValues }));
     }
 
     render() {
