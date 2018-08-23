@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
+import {Route, Switch} from 'react-router-dom';
 
-import api from '../utils/api'
+import api from '../utils/api';
+
+import ListPosts from './listposts';
+import CreatePost from './createpost'
 
 class Posts extends Component {
     constructor(props) {
@@ -12,7 +16,8 @@ class Posts extends Component {
     render() {
         return(
             <div className={"body"}>
-                <h1>Posts page</h1>
+                <Route path="/create" component={CreatePost}/>
+                <Route path="/" component={ListPosts}/>
             </div>
         );
     }
