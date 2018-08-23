@@ -5,6 +5,7 @@ header {
     height: 3em;
     background-color: #222222;
     z-index: 10;
+    color: var(--light-txt-color);
 }
 
 nav {
@@ -26,7 +27,7 @@ ul.inline-nav li {
 
 ul.inline-nav a {
     text-decoration: none;
-    color: #dfe6e9;
+    color: var(--light-txt-color);
     font-size: 1.5em;
     text-align: center;
 }
