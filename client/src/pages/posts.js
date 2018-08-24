@@ -10,15 +10,16 @@ class Posts extends Component {
     constructor(props) {
         super(props);
 
-        api.load("ping", (result) => console.log({ data: result.msg, info: result.envValues }));
+        api.load("ping", (result) => console.log({ msg: result.message, info: result.body }));
     }
 
     render() {
         return(
-            <div className={"body"}>
-                <Route path="/create" component={CreatePost}/>
-                <Route path="/" component={ListPosts}/>
-            </div>
+            
+            <Switch>
+                <Route path={`${this.props.match.path}/create`} component={CreatePost}/>
+                <Route path={`${this.props.match.path}/`} component={ListPosts}/>
+            </Switch>
         );
     }
 }

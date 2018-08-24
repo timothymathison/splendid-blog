@@ -1,14 +1,19 @@
 
 const basePath = process.env.PUBLIC_URL;
 
-let load = async (resource, send) => {
-    let responce = await fetch(`${basePath}/api/${resource}`);
-    let result = await responce.json()
-        .then(result => send(result), () => {}) //send result back to application
-        .catch(reason => console.error(`Failed to load response from ${resource}: ${reason}`))
+const load = async (resource, send) => {
+    let response = await fetch(`${basePath}/api/${resource}`);
+    await response.json()
+        .then(result => afterLoad(resource, response, result, send),
+            () => {console.error("I was used (says load error function)")}) //send result back to application
+        .catch(reason => console.error(`Failed to process response from ${resource}: ${reason}`));
+}
 
-    if (responce.status !== 200) { //status other than OK
-        console.error(result.message)
+const afterLoad = (resource, response, result, send) => {
+    if (response.status !== 200) { //status other than OK
+        console.error(`Bad status code: ${response.status} received when trying to load resource: ${resource}\n Reason: ${result.message}`);
+    } else {
+        send(result);
     }
 }
 
