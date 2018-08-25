@@ -2,7 +2,8 @@ body {
   --dark-bg-color: #222222;
   --med-bg-color: #616161; /*American River*/
   --light-txt-color: #dcdde1; /*hint of pensive*/
-
+  --content-bg-color: #74b9ff;
+  --content-border-color: #222222;
 }
 
 .page {
@@ -17,7 +18,7 @@ body {
     max-width: 75em;
     height: 100%;
     margin: auto;
-    padding: 3em 1em 1em 1em;
+    padding: 4em 1em 1em 1em;
     box-sizing: border-box;
     z-index: 5;
 }
@@ -31,5 +32,39 @@ body {
 .not-found h1 {
     font-size: 4em;
     margin: 0;
+}
+
+.title-content {
+    width: 100%;
+    text-align: center;
+    background-color: var(--content-bg-color);
+    border: 2px solid var(--content-border-color);
+    border-radius: 5px;   
+}
+
+.flex-flow {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+.main-content {
+    margin: 1em 1em 1em 0;
+    flex-grow: 2;
+
+    /* temporary styling */
+    background-color: var(--content-bg-color);
+    border: 2px solid var(--content-border-color);
+    border-radius: 5px; 
+}
+
+.side-content {
+    margin: 1em 0 1em 1em;
+    flex-grow: 1;
+
+     /* temporary styling */
+    background-color: var(--content-bg-color);
+    border: 2px solid var(--content-border-color);
+    border-radius: 5px; 
 }
 
