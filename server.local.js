@@ -7,7 +7,7 @@ const port = process.env.PORT || 4000;
 if (process.env.NODE_ENV !== 'production') {
     envLoader({ path: ".env.development.json"});
 } else {
-    envLoader({ path: ".env.production.json"})
+    envLoader({ path: ".env.production.local.json"})
 }
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
