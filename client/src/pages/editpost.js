@@ -18,7 +18,7 @@ const modules = {
 const formats = [
         'header', 'font', 'size',
         'bold', 'italic', 'underline', 'strike', 'code-block',
-        'list', 'bullet', 'indent',
+        'list', 'bullet', 'indent', "direction",
         'link', 'image', 'video'
     ]
 
