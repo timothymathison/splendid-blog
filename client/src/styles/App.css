@@ -2,7 +2,9 @@ body {
   --dark-bg-color: #222222;
   --med-bg-color: #616161; /*American River*/
   --light-txt-color: #dcdde1; /*hint of pensive*/
-  --content-bg-color: #74b9ff;
+  --light-bg-color: #dcdde1; /*hint of pensive*/
+  /* --content-bg-color: #74b9ff; */
+  --content-bg-color: #99738A;
   --content-border-color: #222222;
 }
 
@@ -15,7 +17,7 @@ body {
 
 .body {
     width: 100%;
-    max-width: 75em;
+    /* max-width: 75em; */
     height: 100%;
     margin: auto;
     padding: 4em 1em 1em 1em;

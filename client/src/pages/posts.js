@@ -4,11 +4,11 @@ import {Route, Switch} from 'react-router-dom';
 // import api from '../utils/api';
 
 import ListPosts from './listposts';
-import CreatePost from './createpost';
+import EditPost from './editpost';
 
 const Posts = (props) => (
     <Switch>
-        <Route path={`${props.match.path}/create`} component={CreatePost}/>
+        <Route path={`${props.match.path}/create`} component={EditPost}/>
         <Route path={`${props.match.path}/`} component={ListPosts}/>
     </Switch>
 )
