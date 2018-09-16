@@ -1,0 +1,14 @@
+.ql-container {
+    background-color: var(--light-bg-color);
+    min-height: 30em;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-color: var(--content-border-color)
+}
+
+.ql-toolbar {
+    background-color: var(--content-bg-color);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-color: var(--content-border-color)
+}

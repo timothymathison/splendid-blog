@@ -2,6 +2,7 @@ import React, {Component}  from 'react';
 import ReactQuill from 'react-quill';
 
 import 'react-quill/dist/quill.snow.css';
+import '../styles/editor.css';
 
 const modules = {
     toolbar: [
