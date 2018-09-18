@@ -25,9 +25,16 @@ const formats = [
 class EditPost extends Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = props.post ? props.post
+        : {
+            title: "",
+            category: "",
             editorHTML: ""
         }
+    }
+
+    shouldComponentUpdate() {
+        return false; //always return false as editor re-renders internally
     }
 
     handleChange = (html) => {
@@ -38,19 +45,27 @@ class EditPost extends Component {
         console.log(this.state.editorHTML); //log it for now
     }
 
+    componentDidMount() {
+        document.getElementById("save-post").addEventListener("click", this.save) //add event listener for save event
+    }
+
     render() {
         return (
             <div className="body">
+                <form>
+                    <input type="text" name="post-title" id="post-title" value={this.state.title} />
+                    
+                </form>
                 <ReactQuill className="post-editor"
                     theme="snow"
                     onChange={this.handleChange}
                     value={this.state.editorHTML}
-                    bounds=".body"
+                    bounds=".post-editor"
                     placeholder="Write something..."
                     modules={modules}
                     formats={formats}>
                 </ReactQuill>
-                {/* <button onClick={this.save()}>Save</button> */}
+                <button id="save-post">Save</button>
             </div>
         )
     }
