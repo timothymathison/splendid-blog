@@ -9,6 +9,9 @@ import Posts from './pages/posts';
 import NotFound from './pages/notfound'
 import Header from './components/header';
 
+import './styles/icon.css'
+import {IconData} from './components/icons';
+
 const basePath = process.env.PUBLIC_URL;
 
 const App = () => (
@@ -24,6 +27,7 @@ const App = () => (
                 <Route path='/posts' component={Posts} />
                 <Route component={NotFound} />
             </Switch>
+            <IconData />
         </div>
     </Router>
 );

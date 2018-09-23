@@ -2,9 +2,9 @@ import React from 'react';
 
 import '../styles/icon.css'
 
-const Icon = (id) => (
+const Icon = (props) => (
     <svg class="icon">
-        <use xlinkHref={`#${id}-icon`}></use>
+        <use xlinkHref={`#${props.iconId}-icon`}></use>
     </svg>
 );
 
