@@ -9,6 +9,7 @@ form input[type=text] {
     height: 2em;
     padding: 0.5em;
     margin: 2em 0;
+    box-sizing: border-box;
 }
 
 .post-editor {
