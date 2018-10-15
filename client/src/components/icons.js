@@ -3,7 +3,7 @@ import React from 'react';
 import '../styles/icon.css'
 
 const Icon = (props) => (
-    <svg class="icon">
+    <svg className="icon">
         <use xlinkHref={`#${props.iconId}-icon`}></use>
     </svg>
 );
