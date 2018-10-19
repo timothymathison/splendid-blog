@@ -1,28 +1,40 @@
 body {
-  --dark-bg-color: #222222;
-  --med-bg-color: #616161; /*American River*/
-  --light-txt-color: #dcdde1; /*hint of pensive*/
-  --light-bg-color: #dcdde1; /*hint of pensive*/
-  /* --content-bg-color: #74b9ff; */
-  --content-bg-color: #99738A;
-  --content-border-color: #222222;
+    --bright-theme-color: #e072c5;
+    --dark-bg-color: #222222;
+    --med-bg-color: #616161; /*American River*/
+    --light-txt-color: #dcdde1; /*hint of pensive*/
+    --light-bg-color: #dcdde1; /*hint of pensive*/
+    /* --content-bg-color: #74b9ff; */
+    --content-bg-color: rgb(218, 172, 141);
+    --content-border-color: #222222;
+    font-size: 1em;
+}
+
+.button {
+    min-width: 20em;
+    background-color: var(--bright-theme-color);
+    margin: 1em 0;
+    border-style: none;
+    border-radius: 5px;
+    height: 2em;
+    padding: 0.5em;
+    font-size: inherit;
 }
 
 .page {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: var(--med-bg-color);
 }
 
 .body {
     width: 100%;
     /* max-width: 75em; */
-    height: 100%;
     margin: auto;
     padding: 4em 1em 1em 1em;
     box-sizing: border-box;
     z-index: 5;
+    background-color: var(--med-bg-color);
 }
 
 .not-found {
