@@ -1,6 +1,9 @@
 import React, {Component}  from 'react';
 import ReactQuill from 'react-quill';
 
+import SelectDropdown from '../components/select';
+import Select from 'react-select';
+
 import 'react-quill/dist/quill.snow.css';
 import '../styles/editor.css';
 
@@ -16,11 +19,13 @@ const modules = {
 }
 
 const formats = [
-        'header', 'font', 'size',
-        'bold', 'italic', 'underline', 'strike', 'code-block',
-        'list', 'bullet', 'indent', "direction",
-        'link', 'image', 'video'
-    ]
+    'header', 'font', 'size',
+    'bold', 'italic', 'underline', 'strike', 'code-block',
+    'list', 'bullet', 'indent', "direction",
+    'link', 'image', 'video'
+]
+
+const categoryOptions = [{value: "life", label: "life"}, {value: "wedding", label: "wedding"}, {value: "gardening", label: "gardening"}];
 
 class EditPost extends Component {
     constructor(props) {
@@ -28,22 +33,30 @@ class EditPost extends Component {
         this.state = props.post ? props.post
         : {
             title: "",
-            description: "",
-            category: "",
+            category: null,
             editorHTML: ""
         }
     }
 
-    shouldComponentUpdate() {
-        return false; //always return false as editor re-renders internally
+    shouldComponentUpdate(newProps, newState) {
+        return this.state.category !== newState.category; //always return false as editor re-renders internally
     }
 
-    handleChange = (html) => {
+    handleTitle = () => {
+        let title = document.getElementById("post-title").value;
+        this.setState({ title: title });
+    }
+
+    handleCategory = (category) => {
+        this.setState({ category: category.key });
+    }
+
+    handleBody = (html) => {
         this.setState({ editorHTML: html })
     }
 
     save = () => {
-        console.log(this.state.editorHTML); //log it for now
+        console.log(this.state); //log it for now
     }
 
     componentDidMount() {
@@ -55,14 +68,15 @@ class EditPost extends Component {
             <div className="body">
                 <div className="post-editor">
                     <form>
-                        <label for="post-title">Title</label>
-                        <input type="text" name="post-title" id="post-title" defaultValue={this.state.title} />
-                        <label for="post-description">Description</label>
-                        <input type="text" name="post-description" id="post-description" defaultValue={this.state.description} />
+                        <label htmlFor="post-title">Title</label>
+                        <input onChange={this.handleTitle} type="text" name="post-title" id="post-title" defaultValue={this.state.title} />
+                        {/* <SelectDropdown id="post-category" name="post-category" handler={this.handleCategory} selected={{key: "gardening", label: "gardening"}}
+                            options={categoryOptions}/> */}
+                        <Select value={this.state.category} onChange={this.handleCategory} options={categoryOptions} />
                     </form>
                     <ReactQuill className="post-body-editor"
                         theme="snow"
-                        onChange={this.handleChange}
+                        onChange={this.handleBody}
                         value={this.state.editorHTML}
                         bounds=".post-body-editor"
                         placeholder="Write something..."
