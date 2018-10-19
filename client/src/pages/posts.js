@@ -11,6 +11,6 @@ const Posts = (props) => (
         <Route path={`${props.match.path}/create`} component={EditPost}/>
         <Route path={`${props.match.path}/`} component={ListPosts}/>
     </Switch>
-)
+);
 
 export default Posts

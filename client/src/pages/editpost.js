@@ -28,6 +28,7 @@ class EditPost extends Component {
         this.state = props.post ? props.post
         : {
             title: "",
+            description: "",
             category: "",
             editorHTML: ""
         }
@@ -52,20 +53,24 @@ class EditPost extends Component {
     render() {
         return (
             <div className="body">
-                <form>
-                    <input type="text" name="post-title" id="post-title" value={this.state.title} />
-                    
-                </form>
-                <ReactQuill className="post-editor"
-                    theme="snow"
-                    onChange={this.handleChange}
-                    value={this.state.editorHTML}
-                    bounds=".post-editor"
-                    placeholder="Write something..."
-                    modules={modules}
-                    formats={formats}>
-                </ReactQuill>
-                <button id="save-post">Save</button>
+                <div className="post-editor">
+                    <form>
+                        <label for="post-title">Title</label>
+                        <input type="text" name="post-title" id="post-title" defaultValue={this.state.title} />
+                        <label for="post-description">Description</label>
+                        <input type="text" name="post-description" id="post-description" defaultValue={this.state.description} />
+                    </form>
+                    <ReactQuill className="post-body-editor"
+                        theme="snow"
+                        onChange={this.handleChange}
+                        value={this.state.editorHTML}
+                        bounds=".post-body-editor"
+                        placeholder="Write something..."
+                        modules={modules}
+                        formats={formats}>
+                    </ReactQuill>
+                    <button className="button" id="save-post">Save</button>
+                </div>
             </div>
         )
     }
