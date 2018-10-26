@@ -10,9 +10,10 @@
   ],
   "scripts": {
     "test-pack": "claudia pack",
-    "init-lambda": "claudia generate-serverless-express-proxy --express-module server",
-    "deploy-lambda": "claudia create --handler lambda.handler --timeout 20 --deploy-proxy-api --region us-east-2 --no-optional-dependencies --role splendid-blog-lambda --version production --set-env-from-json .env.production.json",
-    "deploy-update": "npm run build-client && claudia update --version production --no-optional-dependencies --update-env-from-json .env.production.json",
+    "create-lambda-handler": "claudia generate-serverless-express-proxy --express-module server",
+    "create-lambda-instance": "claudia create --handler lambda.handler --timeout 20 --deploy-proxy-api --region us-east-2 --no-optional-dependencies --role splendid-blog-lambda --version production --set-env-from-json .env.production.json",
+    "deploy": "claudia update --version production --no-optional-dependencies --update-env-from-json .env.production.json",
+    "deploy-b": "npm run build-client && npm run deploy",
     "start": "concurrently \"npm:server\" \"npm:client\"",
     "start-prod": "npm run build-client && NODE_ENV=production node server.local.js",
     "server": "node server.local.js",
