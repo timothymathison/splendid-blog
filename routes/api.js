@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const postRouter = require('./posts');
+const categoryRouter = require('./categories');
 
 router.get('/ping', (req, res) => {
     res.send({ message: "Hello from express api!",
@@ -10,6 +11,8 @@ router.get('/ping', (req, res) => {
 });
 
 router.use('/posts', postRouter); //send post related requests to posts route
+
+router.use('/categories', categoryRouter);
 
 router.get('*', (req, res) => {
     res.status(404).send({message: "Perhaps you've taken a wrong turn, route not found!"}); //send 404 for get routes that don't exist
