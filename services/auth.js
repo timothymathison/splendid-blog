@@ -14,7 +14,8 @@ const generateToken = (user, secret) => {
 const verifyToken = (token, secret) => {
     try {
         return jwt.verify(token, secret, {maxAge: "10h"}) //tokens more than 10 hours old are never valid
-    } catch {
+    } catch(e) {
+        console.error(e);
         return null;
     }
 };
@@ -24,35 +25,40 @@ const verifyToken = (token, secret) => {
 const login = (req, res, next) => {
     let u = db.user.get(req.body.username);
     //TODO: check hash of password
-    req.user = u;
-    next();
-}
+    let token = generateToken(u, secret);
+    console.log(`User ${u.id} logged in`);
+    res.send({
+        message: 'Logged in',
+        access_token: token,
+        token_type: 'Bearer',
+        expires_in: expire
+    });
+};
 
 // checks incoming request for proper authorization
-const require = (role) => (req, res, next) => {
+const requireLogin = (role) => (req, res, next) => {
     let token = req.get('Authorization');
     if(!token) { //request has no authorization whatsoever, assume taking the current route was a mistake
         res.status(404).send({ message: 'Perhaps you\'ve taken a wrong turn, route not found!' });
     } else if(!token.startsWith('Bearer ')) {
         res.status(401).send({ message: 'Invalid Authorization token' });
-    }
+    } else {
+        //check token validity
+        token = token.slice(7) //token after "Bearer "
+        let user = verifyToken(token, secret);
+        if(!user) {
+            res.status(401).send({ message: 'Invalid Authorization token' });
+        } else if(user.role != role) { //compare roles
+            res.status(403).send({ message: 'Authorization token has insufficient scope' });
+        }
 
-    //check token validity
-    let user = verifyToken(token, secret);
-    if(!user) {
-        res.status(401).send({ message: 'Invalid Authorization token' });
+        //user has access!
+        console.log('User was authorization');
+        next();
     }
-
-    //compare roles
-    if(user.role != role) {
-        res.status(403).send({ message: 'Authorization token has insufficient scope' });
-    }
-
-    //user has access!
-    next();
 };
 
 module.exports = {
-    require: require,
+    require: requireLogin,
     login: login
 };
