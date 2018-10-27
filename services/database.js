@@ -18,7 +18,15 @@ const getMultiplePosts = (ids) => {
 };
 
 const getUser = (id) => {
-    //return a user entry from database
+    user = {
+        id: id,
+        role: 'admin',
+        firstName: null,
+        lastName: null,
+        email: null
+    };
+    //TODO: return a user entry from database
+    return user;
 };
 
 module.exports = {
