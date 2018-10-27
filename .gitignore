@@ -7,4 +7,5 @@ node_modules/
 # misc
 *.zip
 .idea/
+.vscode/
 .DS_Store
