@@ -22,12 +22,12 @@ const getUser = (id) => {
 };
 
 module.exports = {
-    posts: {
+    post: {
         create: createPost,
         get: getPost,
         getMultiple: getMultiplePosts
     },
-    users: {
+    user: {
         get: getUser
     }
 };

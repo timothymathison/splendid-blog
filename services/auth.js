@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 
+const db = require('./database');
+
 const secret = process.env.SERVER_SECRET; //TODO pass this in
 const expire = 60 * 60; // by default tokens expire in 1 hour
 
@@ -19,7 +21,12 @@ const verifyToken = (token, secret) => {
 
 //TODO: consider using somthing like passport.js
 //TODO: create password login method
-
+const login = (req, res, next) => {
+    let u = db.user.get(req.body.username);
+    //TODO: check hash of password
+    req.user = u;
+    next();
+}
 
 // checks incoming request for proper authorization
 const require = (role) => (req, res, next) => {
@@ -46,5 +53,6 @@ const require = (role) => (req, res, next) => {
 };
 
 module.exports = {
-    require: require
+    require: require,
+    login: login
 };
