@@ -2,7 +2,8 @@ const AWS = require('aws-sdk');
 
 const dynamodb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
 
-const postsTable = process.env.AWS_POST_TABLE;
+const postsTable = process.env.AWS_POST_TABLE || 'splendid-blog-posts'; //define from env otherwise default
+const usersTable = process.env.AWS_USER_TABLE || 'splendid-blog-users';
 
 const createPost = (post) => {
     //save a new post database entry and return success
