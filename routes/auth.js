@@ -6,9 +6,6 @@ const authService = require('../services/auth');
 
 router.use(bodyParser.json());
 
-router.post('/login', authService.login, (req, res) => {
-    //TODO: send back token
-    res.send({ message: 'Logged in' });
-});
+router.post('/login', authService.login);
 
 module.exports = router;
