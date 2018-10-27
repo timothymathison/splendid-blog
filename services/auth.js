@@ -1,8 +1,12 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
+const errorUtil = require('../utils/errors');
 const db = require('./database');
 
-const secret = process.env.SERVER_SECRET; //TODO pass this in
+//constants
+const realm = 'april.blog';
+const secret = process.env.SERVER_SECRET;
 const expire = 60 * 60; // by default tokens expire in 1 hour
 
 //generate a new token with user info as the payload
@@ -20,18 +24,35 @@ const verifyToken = (token, secret) => {
     }
 };
 
+const sendInvalid = (res) => {
+    res.setHeader('WWW-Authenticate', `Bearer realm=${realm}, error="invalid_token"`); //TODO: include error_description
+    res.status(401).send({ message: 'Invalid Authorization token' });
+};
+
+const sendMissingScope = (res) => {
+    res.setHeader('WWW-Authenticate', `Bearer realm=${realm}, error="insufficient_scope"`); //TODO: include error_description
+    res.status(403).send({ message: 'Authorization token has insufficient scope' });
+}
+
 //TODO: consider using somthing like passport.js
-//TODO: create password login method
-const login = (req, res, next) => {
+const login = (req, res) => {
     let u = db.user.get(req.body.username);
     //TODO: check hash of password
-    let token = generateToken(u, secret);
-    console.log(`User ${u.id} logged in`);
-    res.send({
-        message: 'Logged in',
-        access_token: token,
-        token_type: 'Bearer',
-        expires_in: expire
+    let hashedPass = u.password;
+    bcrypt.compare(req.body.password, hashedPass, (err, match) => {
+        if(match) {
+            let token = generateToken(u, secret);
+            console.log(`User ${u.id} logged in`);
+            res.send({
+                message: 'Logged in',
+                access_token: token,
+                token_type: 'Bearer',
+                expires_in: expire
+            });
+        } else {
+            console.error(err);
+            errorUtil.badRequest(res);
+        }
     });
 };
 
@@ -39,22 +60,22 @@ const login = (req, res, next) => {
 const requireLogin = (role) => (req, res, next) => {
     let token = req.get('Authorization');
     if(!token) { //request has no authorization whatsoever, assume taking the current route was a mistake
-        res.status(404).send({ message: 'Perhaps you\'ve taken a wrong turn, route not found!' });
+        errorUtil.notFound(res);
     } else if(!token.startsWith('Bearer ')) {
-        res.status(401).send({ message: 'Invalid Authorization token' });
+        sendInvalid(res);
     } else {
         //check token validity
         token = token.slice(7) //token after "Bearer "
         let user = verifyToken(token, secret);
         if(!user) {
-            res.status(401).send({ message: 'Invalid Authorization token' });
+            sendInvalid(res);
         } else if(user.role != role) { //compare roles
-            res.status(403).send({ message: 'Authorization token has insufficient scope' });
+            sendMissingScope(res);
+        } else {
+            //user has access!
+            console.log('User was authorization');
+            next();
         }
-
-        //user has access!
-        console.log('User was authorization');
-        next();
     }
 };
 
