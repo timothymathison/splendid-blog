@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const defaults = [
-    { id: 'wedding', label: 'Wedding' },
-    { id: 'cooking', label: 'Cooking' },
-    { id: 'decorating', label: 'Decorating' } //change theses
+    { id: 'life', label: 'Life' },
+    { id: 'food', label: 'Food' },
+    { id: 'inspiration', label: 'Inspiration' }
 ];
 
 router.get('/list', (req, res) => {
