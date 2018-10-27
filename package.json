@@ -5,6 +5,7 @@
   "main": "lambda.js",
   "files": [
     "services/",
+    "utils/",
     "routes/",
     "server.js",
     "client/build/"
