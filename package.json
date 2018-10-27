@@ -17,7 +17,7 @@
     "deploy-b": "npm run build-client && npm run deploy",
     "start": "concurrently \"npm:server\" \"npm:client\"",
     "start-prod": "npm run build-client && NODE_ENV=production node server.local.js",
-    "server": "node server.local.js",
+    "server": "nodemon server.local.js",
     "client": "cd client && npm start",
     "build-client": "cd client && npm run build && cd ../",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -34,7 +34,8 @@
   "devDependencies": {
     "claudia": "^5.1.0",
     "concurrently": "^3.6.1",
-    "dotenv-json": "^1.0.0"
+    "dotenv-json": "^1.0.0",
+    "nodemon": "^1.18.5"
   },
   "repository": {
     "type": "git",

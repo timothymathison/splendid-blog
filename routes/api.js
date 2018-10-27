@@ -6,8 +6,8 @@ const categoryRouter = require('./categories');
 const authRouter = require('./auth');
 
 router.get('/ping', (req, res) => {
-    res.send({ message: "Hello from express api!",
-        routes: ["/ping", "/posts/create"],
+    res.send({ message: 'Hello from express api!',
+        routes: ['/ping', '/posts/create', '/categories/list', '/auth/login'],
         body: process.env });
 });
 
@@ -18,11 +18,11 @@ router.use('/categories', categoryRouter); //send category related requests to c
 router.use('/auth', authRouter); //send auth related requests to auth route
 
 router.get('*', (req, res) => {
-    res.status(404).send({message: "Perhaps you've taken a wrong turn, route not found!"}); //send 404 for get routes that don't exist
+    res.status(404).send({message: 'Perhaps you\'ve taken a wrong turn, route not found!'}); //send 404 for get routes that don't exist
 });
 
 router.post('*', (req, res) => {
-    res.status(404).send({message: "Perhaps you've taken a wrong turn, route not found!"}); //send 404 for post routes that don't exist
+    res.status(404).send({message: 'Perhaps you\'ve taken a wrong turn, route not found!'}); //send 404 for post routes that don't exist
 });
 
 
