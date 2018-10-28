@@ -11,7 +11,7 @@ const expire = 60 * 60; // by default tokens expire in 1 hour
 
 //generate a new token with user info as the payload
 const generateToken = (user, secret) => {
-    return jwt.sign(user, secret, {expiresIn: expire});
+    return jwt.sign({ user: user }, secret, {expiresIn: expire});
 };
 
 //verify token is valid and return the payload
@@ -31,12 +31,12 @@ const sendInvalid = (res) => {
 
 const sendMissingScope = (res) => {
     res.setHeader('WWW-Authenticate', `Bearer realm=${realm}, error="insufficient_scope"`); //TODO: include error_description
-    res.status(403).send({ message: 'Authorization token has insufficient scope' });
+    res.status(403).send({ message: 'User identified by authorization token has incorrect role' });
 }
 
 //TODO: consider using somthing like passport.js
 const login = (req, res) => {
-    let u = db.user.get(req.body.username);
+    let u = db.user.get(req.body.id);
     //TODO: check hash of password
     let hashedPass = u.password;
     bcrypt.compare(req.body.password, hashedPass, (err, match) => {
@@ -66,10 +66,10 @@ const requireLogin = (role) => (req, res, next) => {
     } else {
         //check token validity
         token = token.slice(7) //token after "Bearer "
-        let user = verifyToken(token, secret);
-        if(!user) {
+        let auth = verifyToken(token, secret);
+        if(!auth) {
             sendInvalid(res);
-        } else if(user.role != role) { //compare roles
+        } else if(auth.user.role != role) { //compare roles
             sendMissingScope(res);
         } else {
             //user has access!
