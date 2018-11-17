@@ -1,0 +1,92 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "AWS storage resources for the Splendid Blog project",
+    "Resources": {
+        "UsersTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+                "TableName": "SplendidBlogUsers",
+                "AttributeDefinitions": [
+                    {
+                        "AttributeName": "id",
+                        "AttributeType": "S"
+                    }
+                ],
+                "KeySchema": [
+                    {
+                        "AttributeName": "id",
+                        "KeyType": "HASH"
+                    }
+                ],
+                "ProvisionedThroughput": {
+                    "ReadCapacityUnits": 5,
+                    "WriteCapacityUnits": 5
+                }
+            }
+        },
+        "PostsTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+                "TableName": "SplendidBlogPosts",
+                "AttributeDefinitions": [
+                    {
+                        "AttributeName": "id",
+                        "AttributeType": "S"
+                    },
+                    {
+                        "AttributeName": "created",
+                        "AttributeType": "S"
+                    },
+                    {
+                        "AttributeName": "category",
+                        "AttributeType": "S"
+                    }
+                ],
+                "KeySchema": [
+                    {
+                        "AttributeName": "id",
+                        "KeyType": "HASH"
+                    },
+                    {
+                        "AttributeName": "created",
+                        "KeyType": "RANGE"
+                    }
+                ],
+                "GlobalSecondaryIndexes": [
+                    {
+                        "IndexName": "Categorize",
+                        "KeySchema": [
+                            {
+                                "AttributeName": "category",
+                                "KeyType": "HASH"
+                            }
+                        ],
+                        "Projection": {
+                            "ProjectionType": "KEYS_ONLY"
+                        },
+                        "ProvisionedThroughput": {
+                            "ReadCapacityUnits": 5,
+                            "WriteCapacityUnits": 5
+                        }
+                    }
+                ],
+                "ProvisionedThroughput": {
+                    "ReadCapacityUnits": 5,
+                    "WriteCapacityUnits": 5
+                }
+            },
+            "DependsOn": [
+                "UsersTable"
+            ]
+        },
+        "PostStorageBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "BucketName": "splendidblogposts"
+            },
+            "DependsOn": [
+                "PostsTable"
+            ]
+        }
+    }
+}
