@@ -82,7 +82,7 @@
         "PostStorageBucket": {
             "Type": "AWS::S3::Bucket",
             "Properties": {
-                "BucketName": "splendidblogposts"
+                "BucketName": "splendidblog"
             },
             "DependsOn": [
                 "PostsTable"

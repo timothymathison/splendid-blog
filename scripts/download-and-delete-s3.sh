@@ -5,4 +5,4 @@
 s3_bucket=s3://splendidblogdev
 cwd=`pwd`
 
-aws s3 mv $s3_bucket/ $cwd/content/ --recursive
+aws s3 mv $s3_bucket/ $cwd/content/ --recursive --profile splendid-blog
