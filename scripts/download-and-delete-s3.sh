@@ -2,7 +2,7 @@
 
 #download the content stored in the development s3 bucket and delete the content in s3 to save storage
 
-s3_bucket=s3://splendidblogdev
-cwd=`pwd`
+s3_bucket=s3://splendidblog
+dir=`dirname $0`
 
-aws s3 mv $s3_bucket/ $cwd/content/ --recursive --profile splendid-blog
+aws s3 mv $s3_bucket/ $dir/content/ --recursive --profile splendid-blog
