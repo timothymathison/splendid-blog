@@ -17,6 +17,10 @@ const getMultiplePosts = (ids) => {
     //return list of post entries from database
 };
 
+const createUser = (user) => {
+    // save user in database
+};
+
 const getUser = (id) => {
     user = {
         id: id,
@@ -36,6 +40,7 @@ module.exports = {
         getMultiple: getMultiplePosts
     },
     user: {
+        create: createUser,
         get: getUser
     }
 };
