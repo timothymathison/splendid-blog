@@ -6,10 +6,17 @@ const postRouter = require('./posts');
 const categoryRouter = require('./categories');
 const authRouter = require('./auth');
 
-router.get('/ping', (req, res) => {
-    res.send({ message: 'Hello from express api!',
-        routes: ['/ping', '/posts/create', '/categories/list', '/auth/login'],
-        body: process.env });
+router.all('^\/((ping)?|(ping\/)?)$', (req, res) => { // list all get routes
+    res.send({ 
+        message: 'Hello from express api!',
+        routes: [
+            {path: '/ping'},
+            {path: '/categories/list', method: 'GET'},
+            {path: '/auth/login', method: 'POST'},
+            {path: '/posts/create', method: "POST"}
+        ],
+        body: process.env
+    });
 });
 
 router.use('/posts', postRouter); //send post related requests to posts route
