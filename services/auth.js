@@ -8,6 +8,13 @@ const db = require('./database');
 const realm = 'april.blog';
 const secret = process.env.SERVER_SECRET;
 const expire = 60 * 60; // by default tokens expire in 1 hour
+const saltNum = 10; // number of rounds used to generage salt for hashing passwords
+
+//generate a password hash which can be safely stored
+const hashPassword = (pass) => {
+    let salt = bcrypt.genSaltSync(saltNum);
+    return bcrypt.hashSync(pass, salt);
+};
 
 //generate a new token with user info as the payload
 const generateToken = (user, secret) => {
@@ -37,9 +44,9 @@ const sendMissingScope = (res) => {
 //TODO: consider using somthing like passport.js
 const login = (req, res) => {
     let u = db.user.get(req.body.id); //TODO: check that user exists
-    let hashedPass = u.password;
+    let hashedPass = u.hashedPassword;
     bcrypt.compare(req.body.password, hashedPass, (err, match) => {
-        if(match) {
+        if(match === true) {
             let token = generateToken(u, secret);
             console.log(`User ${u.id} logged in`);
             res.send({
@@ -80,5 +87,6 @@ const requireLogin = (role) => (req, res, next) => {
 
 module.exports = {
     require: requireLogin,
-    login: login
+    login: login,
+    hash: hashPassword
 };
