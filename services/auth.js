@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const errorUtil = require('../utils/errors');
-const db = require('./database');
+const useDB = process.env.DATABASE || 'database'
+const db = require(`./${useDB}`);
 
 //constants
 const realm = 'april.blog';
