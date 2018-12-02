@@ -5,6 +5,8 @@ const dynamodb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
 const postsTable = process.env.AWS_POST_TABLE || 'SplendidBlogPosts'; //define from env otherwise default
 const usersTable = process.env.AWS_USER_TABLE || 'SplendidBlogUsers';
 
+const roles = { user: 'user', admin: 'admin'};
+
 const createPost = (post) => {
     //save a new post database entry and return success
 };
@@ -41,6 +43,7 @@ module.exports = {
     },
     user: {
         create: createUser,
-        get: getUser
+        get: getUser,
+        roleOptions: roles
     }
 };
