@@ -18,11 +18,11 @@ const getMultiplePosts = (ids) => {
 
 const createUser = (user) => {
     // return user if valid
-    let valid = user.id
-        && (user.role === roles.user || user.role === roles.admin)
-        && user.hashedPassword;
+    let valid = user.ID
+        && (user.Role === roles.user || user.Role === roles.admin)
+        && user.HashedPassword;
     if(valid) {
-        users[user.id] = user;
+        users[user.ID] = user;
         return user;
     } else {
         throw new Error('Trying to create invalid user');

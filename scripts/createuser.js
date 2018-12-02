@@ -11,9 +11,9 @@ let role = args[3];
 let pass = args[4];
 
 let user = {
-    id: id,
-    role: role,
-    hashedPassword: auth.hash(pass)
+    ID: id,
+    Role: role,
+    HashedPassword: auth.hash(pass)
 };
 
 db.user.create(user);

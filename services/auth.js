@@ -45,11 +45,11 @@ const sendMissingScope = (res) => {
 //TODO: consider using somthing like passport.js
 const login = (req, res) => {
     let u = db.user.get(req.body.id); //TODO: check that user exists
-    let hashedPass = u.hashedPassword;
+    let hashedPass = u.HashedPassword;
     bcrypt.compare(req.body.password, hashedPass, (err, match) => {
         if(match === true) {
             let token = generateToken(u, secret);
-            console.log(`User ${u.id} logged in`);
+            console.log(`User ${u.ID} logged in`);
             res.send({
                 message: 'Logged in',
                 access_token: token,
@@ -76,11 +76,11 @@ const requireLogin = (role) => (req, res, next) => {
         let auth = verifyToken(token, secret);
         if(!auth) {
             sendInvalid(res);
-        } else if(auth.user.role != role) { //compare roles
+        } else if(auth.user.Role != role) { //compare roles
             sendMissingScope(res);
         } else {
             //user has access!
-            console.log('User was authorization');
+            console.log(`User ${auth.user.ID} was authorization`); 
             next();
         }
     }

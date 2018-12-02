@@ -12,12 +12,12 @@ const db = require(`../../${mockDatabase}`);
 const auth = require('../../services/auth');
 
 const user = {
-    id: 'mock_tim',
-    role: db.user.roleOptions.admin,
-    firstName: 'Timothy',
-    lastName: 'Mock',
-    email: 'timothy@mock.co',
-    hashedPassword: auth.hash(testPass)
+    ID: 'mock_tim',
+    Role: db.user.roleOptions.admin,
+    FirstName: 'Timothy',
+    LastName: 'Mock',
+    Email: 'timothy@mock.co',
+    HashedPassword: auth.hash(testPass)
 };
 db.user.create(user);
 

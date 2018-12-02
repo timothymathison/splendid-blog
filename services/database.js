@@ -25,11 +25,11 @@ const createUser = (user) => {
 
 const getUser = (id) => {
     user = {
-        id: id,
-        role: 'admin',
-        firstName: null,
-        lastName: null,
-        email: null
+        ID: id,
+        Role: 'admin',
+        FirstName: null,
+        LastName: null,
+        Email: null
     };
     //TODO: return a user entry from database
     return user;

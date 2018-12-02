@@ -8,13 +8,13 @@
                 "TableName": "SplendidBlogUsers",
                 "AttributeDefinitions": [
                     {
-                        "AttributeName": "id",
+                        "AttributeName": "ID",
                         "AttributeType": "S"
                     }
                 ],
                 "KeySchema": [
                     {
-                        "AttributeName": "id",
+                        "AttributeName": "ID",
                         "KeyType": "HASH"
                     }
                 ],
@@ -30,25 +30,25 @@
                 "TableName": "SplendidBlogPosts",
                 "AttributeDefinitions": [
                     {
-                        "AttributeName": "id",
+                        "AttributeName": "ID",
                         "AttributeType": "S"
                     },
                     {
-                        "AttributeName": "created",
+                        "AttributeName": "Created",
                         "AttributeType": "S"
                     },
                     {
-                        "AttributeName": "category",
+                        "AttributeName": "Category",
                         "AttributeType": "S"
                     }
                 ],
                 "KeySchema": [
                     {
-                        "AttributeName": "id",
+                        "AttributeName": "ID",
                         "KeyType": "HASH"
                     },
                     {
-                        "AttributeName": "created",
+                        "AttributeName": "Created",
                         "KeyType": "RANGE"
                     }
                 ],
@@ -57,7 +57,7 @@
                         "IndexName": "Categorize",
                         "KeySchema": [
                             {
-                                "AttributeName": "category",
+                                "AttributeName": "Category",
                                 "KeyType": "HASH"
                             }
                         ],
