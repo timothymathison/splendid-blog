@@ -19,7 +19,7 @@ const user = {
     Email: 'timothy@mock.co',
     HashedPassword: auth.hash(testPass)
 };
-db.user.create(user);
+db.user.saveNew(user);
 
 let body = {
     id: 'mock_tim',

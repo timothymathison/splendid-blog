@@ -16,4 +16,4 @@ let user = {
     HashedPassword: auth.hash(pass)
 };
 
-db.user.create(user);
+db.user.saveNew(user);

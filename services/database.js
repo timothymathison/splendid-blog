@@ -5,8 +5,6 @@ const dynamodb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
 const postsTable = process.env.AWS_POST_TABLE || 'SplendidBlogPosts'; //define from env otherwise default
 const usersTable = process.env.AWS_USER_TABLE || 'SplendidBlogUsers';
 
-const roles = { user: 'user', admin: 'admin'};
-
 const createPost = (post) => {
     //save a new post database entry and return success
 };
@@ -19,8 +17,8 @@ const getMultiplePosts = (ids) => {
     //return list of post entries from database
 };
 
-const createUser = (user) => {
-    // save user in database
+const saveNewUser = (user) => {
+    // save new user in database
 };
 
 const getUser = (id) => {
@@ -42,7 +40,7 @@ module.exports = {
         getMultiple: getMultiplePosts
     },
     user: {
-        create: createUser,
+        saveNew: saveNewUser,
         get: getUser,
         roleOptions: roles
     }

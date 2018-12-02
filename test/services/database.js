@@ -16,7 +16,7 @@ const getMultiplePosts = (ids) => {
     // TODO: return list of post entries
 };
 
-const createUser = (user) => {
+const saveNewUser = (user) => {
     // return user if valid
     let valid = user.ID
         && (user.Role === roles.user || user.Role === roles.admin)
@@ -41,7 +41,7 @@ module.exports = {
         getMultiple: getMultiplePosts
     },
     user: {
-        create: createUser,
+        saveNew: saveNewUser,
         get: getUser,
         roleOptions: roles
     }
