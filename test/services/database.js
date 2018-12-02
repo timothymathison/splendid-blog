@@ -1,15 +1,8 @@
-const auth = require('../../services/auth');
 
-const testPass = process.env.TEST_PASSWORD || 'test_pass'
-const user = {
-    id: 'mock_tim',
-    role: 'admin',
-    firstName: 'Timothy',
-    lastName: 'Mock',
-    email: 'timothy@mock.co',
-    hashedPassword: auth.hash(testPass)
-};
+const testPass = process.env.TEST_PASSWORD || 'test_pass';
+
 const roles = { user: 'user', admin: 'admin'};
+let users = {};
 
 const createPost = (post) => {
     // TODO: save return sucess if the post is valid
@@ -26,9 +19,10 @@ const getMultiplePosts = (ids) => {
 const createUser = (user) => {
     // return user if valid
     let valid = user.id
-        && (user.role === roles.user || user.role === user.admin)
+        && (user.role === roles.user || user.role === roles.admin)
         && user.hashedPassword;
     if(valid) {
+        users[user.id] = user;
         return user;
     } else {
         throw new Error('Trying to create invalid user');
@@ -36,8 +30,8 @@ const createUser = (user) => {
 };
 
 const getUser = (id) => {
-    // return test user
-    return id == user.id ? user : null;
+    // return matching user from users object
+    return users[id];
 };
 
 module.exports = {
