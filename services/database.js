@@ -18,6 +18,20 @@ const getMultiplePosts = (ids) => {
 };
 
 const saveNewUser = (user) => {
+    let User = new DynamoDBUser(user);
+    let dbParams = {
+        Item: User,
+        TableName: usersTable
+    };
+    return new Promise(resolve => {
+        dynamodb.putItem(dbParams, (err, data) => {
+            if(err) {
+                resolve(null); //TODO: log some error information
+            } else {
+                resolve(user);
+            }
+        })
+    });
     // save new user in database
 };
 
