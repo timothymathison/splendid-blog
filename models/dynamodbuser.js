@@ -1,19 +1,16 @@
 
 const roles = { user: 'user', admin: 'admin' };
-const getRoles = () => roles;
 
-const DynamoDBUser = (u) => {
-    let user = {};
-
+function DynamoDBUser(u) {
     if(u.ID) {
-        user.ID = {"S": u.ID}
+        this.ID = {"S": u.ID}
     } else {
         throw new Error('Invalid user, missing "ID" property');
     }
 
     if(u.Role) {
-        if(user.Role === roles.user || user.Role === roles.admin) {
-            user.Role = {"S": u.Role};
+        if(u.Role === roles.user || u.Role === roles.admin) {
+            this.Role = {"S": u.Role};
         } else {
             throw new Error('Invalid user, "role" propery is not an allowd value');
         }
@@ -22,25 +19,24 @@ const DynamoDBUser = (u) => {
     }
 
     if(u.HashedPassword) {
-        user.HashedPassword = {"S": u.HashedPassword};
+        this.HashedPassword = {"S": u.HashedPassword};
     } else {
         throw new Error('invalid user, missing "HashedPassword property');
     }
 
     if(u.FirstName) {
-        user.FirstName = {"S": u.FirstName};
+        this.FirstName = {"S": u.FirstName};
     }
 
     if(u.LastName) {
-        user.LastName = {"S": u.LastName};
+        this.LastName = {"S": u.LastName};
     }
 
     if(u.Email) {
-        user.Email = {"S": u.Email};
+        this.Email = {"S": u.Email};
     }
 };
 
-module.exports = {
-    create: DynamoDBUser,
-    getRoles: getRoles
-}
+DynamoDBUser.prototype.getRoles = () => roles;
+
+module.exports = DynamoDBUser;
