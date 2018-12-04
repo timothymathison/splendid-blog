@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
-
 const dynamodb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
+const DynamoDBUser = require('../models/dynamodbuser');
 
 const postsTable = process.env.AWS_POST_TABLE || 'SplendidBlogPosts'; //define from env otherwise default
 const usersTable = process.env.AWS_USER_TABLE || 'SplendidBlogUsers';
@@ -42,5 +42,6 @@ module.exports = {
     user: {
         saveNew: saveNewUser,
         get: getUser,
+        getRoles: DynamoDBUser.prototype.getRoles
     }
 };

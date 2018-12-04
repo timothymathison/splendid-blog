@@ -13,7 +13,7 @@ const auth = require('../../services/auth');
 
 const user = {
     ID: 'mock_tim',
-    Role: db.user.roleOptions.admin,
+    Role: db.user.getRoles().admin,
     FirstName: 'Timothy',
     LastName: 'Mock',
     Email: 'timothy@mock.co',
