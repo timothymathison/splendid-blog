@@ -42,6 +42,5 @@ module.exports = {
     user: {
         saveNew: saveNewUser,
         get: getUser,
-        roleOptions: roles
     }
 };
