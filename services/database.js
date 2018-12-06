@@ -23,10 +23,10 @@ const saveNewUser = (user) => {
         Item: User,
         TableName: usersTable
     };
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         dynamodb.putItem(dbParams, (err, data) => {
             if(err) {
-                resolve(null); //TODO: log some error information
+                reject(err); //TODO: log some error information
             } else {
                 resolve(user);
             }

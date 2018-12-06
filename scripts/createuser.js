@@ -16,4 +16,6 @@ let user = {
     HashedPassword: auth.hash(pass)
 };
 
-db.user.saveNew(user);
+db.user.saveNew(user)
+    .then(res => console.log(`User created: ${res}`))
+    .catch(err => console.error(`User is invalid: ${err} \nUser: ${user}`));
