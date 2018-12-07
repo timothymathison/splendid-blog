@@ -42,15 +42,22 @@ const saveNewUser = (user) => {
 };
 
 const getUser = (id) => {
-    user = {
-        ID: id,
-        Role: 'admin',
-        FirstName: null,
-        LastName: null,
-        Email: null
-    };
-    //TODO: return a user entry from database
-    return new Promise( resolve => resolve(user));
+    // return User from database, who's ID matches that given
+    return new Promise( (resolve, reject) => {
+        let params = {
+            Key: {
+                HashKeyElement: {"S": id}
+            },
+            TableName: usersTable
+        };
+        dynamodb.getItem(params, (err, User) => {
+            if(err) {
+                reject(err);
+            } else {
+                resolve(DynamoDBUser.prototype.getProperties(User));
+            }
+        });
+    });
 };
 
 module.exports = {
