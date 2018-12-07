@@ -23,7 +23,8 @@ const saveNewUser = (user) => {
             let User = new DynamoDBUser(user);
             let dbParams = {
                 Item: User,
-                TableName: usersTable
+                TableName: usersTable,
+                ConditionExpression: 'attribute_not_exists(ID)'
             };
             // save new user in database, TODO: check whether user already exists
             dynamodb.putItem(dbParams, (err, data) => {

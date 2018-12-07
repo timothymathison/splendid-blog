@@ -18,4 +18,4 @@ let user = {
 
 db.user.saveNew(user)
     .then(res => console.log(`User created: ${JSON.stringify(res)}`))
-    .catch(err => console.error(`User is invalid: ${err} \nUser: ${user}`));
+    .catch(err => console.error(`User is invalid: ${err} \nUser: ${JSON.stringify(user)}`));
