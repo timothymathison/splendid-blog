@@ -12,7 +12,7 @@ function DynamoDBUser(u) {
         if(u.Role === roles.user || u.Role === roles.admin) {
             this.Role = {"S": u.Role};
         } else {
-            throw new Error('Invalid user, "role" propery is not an allowd value'); // Role must be one of several values
+            throw new Error('Invalid user, "role" propery is not an allowed value'); // Role must be one of several values
         }
     } else {
         throw new Error('Invalid user, missing "Role" property'); // Role is required
@@ -38,14 +38,15 @@ function DynamoDBUser(u) {
 };
 
 DynamoDBUser.prototype.getRoles = () => roles;
-DynamoDBUser.prototype.getProperties = function() {
+DynamoDBUser.prototype.getProperties = function(other) {
+    let u = other ? other : this;
     return {
-        ID: this.ID.S,
-        Role: this.Role.S,
-        FirstName: this.FirstName ? this.FirstName.S : null,
-        LastName: this.LastName ? this.LastName.S : null,
-        Email: this.Email ? this.LastName.S : null,
-        HashedPassword: this.HashedPassword.S
+        ID: u.ID.S,
+        Role: u.Role.S,
+        FirstName: u.FirstName ? u.FirstName.S : null,
+        LastName: u.LastName ? u.LastName.S : null,
+        Email: u.Email ? u.LastName.S : null,
+        HashedPassword: u.HashedPassword.S
     };
 }
 
