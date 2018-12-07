@@ -19,13 +19,15 @@ const getMultiplePosts = (ids) => {
 
 const saveNewUser = (user) => {
     // return user if valid
-    try {
-        let User = new DynamoDBUser(user);
-        users[user.ID] = User;
-        return new Promise(resolve => resolve(user));
-    } catch(err) {
-        return new Promise((resolve, reject) => reject(err));
-    }
+    return new Promise((resolve, reject) => {
+        try {
+            let User = new DynamoDBUser(user);
+            users[user.ID] = User;
+            resolve(user);
+        } catch(err) {
+           reject(err);
+        }
+    });
 };
 
 const getUser = (id) => {

@@ -44,23 +44,28 @@ const sendMissingScope = (res) => {
 
 //TODO: consider using somthing like passport.js
 const login = async (req, res) => {
-    let u = await db.user.get(req.body.id); //TODO: check that user exists
-    let hashedPass = u.HashedPassword;
-    bcrypt.compare(req.body.password, hashedPass, (err, match) => {
-        if(match === true) {
-            let token = generateToken(u, secret);
-            console.log(`User ${u.ID} logged in`);
-            res.send({
-                message: 'Logged in',
-                access_token: token,
-                token_type: 'Bearer',
-                expires_in: expire
-            });
-        } else {
-            console.error(err);
-            errorUtil.badRequest(res);
-        }
-    });
+    try {
+        let u = await db.user.get(req.body.id); // retrieve user from database
+        let hashedPass = u.HashedPassword;
+        bcrypt.compare(req.body.password, hashedPass, (err, match) => {
+            if(match === true) {
+                let token = generateToken(u, secret);
+                console.log(`User ${u.ID} logged in`);
+                res.send({
+                    message: 'Logged in',
+                    access_token: token,
+                    token_type: 'Bearer',
+                    expires_in: expire
+                });
+            } else { // password doesn't match
+                console.error(err);
+                errorUtil.badRequest(res);
+            }
+        });
+    } catch(err) { // error retrieving the user
+        console.error(err);
+        errorUtil.badRequest(res);
+    }
 };
 
 // checks incoming request for proper authorization
