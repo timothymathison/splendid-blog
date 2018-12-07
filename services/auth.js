@@ -43,8 +43,8 @@ const sendMissingScope = (res) => {
 }
 
 //TODO: consider using somthing like passport.js
-const login = (req, res) => {
-    let u = db.user.get(req.body.id); //TODO: check that user exists
+const login = async (req, res) => {
+    let u = await db.user.get(req.body.id); //TODO: check that user exists
     let hashedPass = u.HashedPassword;
     bcrypt.compare(req.body.password, hashedPass, (err, match) => {
         if(match === true) {

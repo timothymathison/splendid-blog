@@ -44,7 +44,7 @@ const getUser = (id) => {
         Email: null
     };
     //TODO: return a user entry from database
-    return user;
+    return new Promise( resolve => resolve(user));
 };
 
 module.exports = {

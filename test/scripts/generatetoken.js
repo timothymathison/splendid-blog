@@ -19,13 +19,14 @@ const user = {
     Email: 'timothy@mock.co',
     HashedPassword: auth.hash(testPass)
 };
-db.user.saveNew(user);
+db.user.saveNew(user).then( () => {
+    let body = {
+        id: 'mock_tim',
+        password: process.env.TEST_PASSWORD
+    }
+    
+    auth.login({ body: body }, { send: obj => {
+        console.log(obj);
+    }});
+});
 
-let body = {
-    id: 'mock_tim',
-    password: process.env.TEST_PASSWORD
-}
-
-auth.login({ body: body }, { send: obj => {
-    console.log(obj);
-}});

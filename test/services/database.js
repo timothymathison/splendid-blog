@@ -30,7 +30,7 @@ const saveNewUser = (user) => {
 
 const getUser = (id) => {
     // return matching user from users object
-    return users[id].getProperties();
+    return new Promise( resolve => resolve(users[id].getProperties()));
 };
 
 module.exports = {
