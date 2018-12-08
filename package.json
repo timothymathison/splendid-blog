@@ -36,9 +36,11 @@
     "aws-sdk": "^2.286.2"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "claudia": "^5.1.0",
     "concurrently": "^3.6.1",
     "dotenv-json": "^1.0.0",
+    "mocha": "^5.2.0",
     "nodemon": "^1.18.5"
   },
   "repository": {
