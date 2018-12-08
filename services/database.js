@@ -46,15 +46,15 @@ const getUser = (id) => {
     return new Promise( (resolve, reject) => {
         let params = {
             Key: {
-                HashKeyElement: {"S": id}
+                "ID": {"S": id}
             },
             TableName: usersTable
         };
-        dynamodb.getItem(params, (err, User) => {
+        dynamodb.getItem(params, (err, res) => {
             if(err) {
                 reject(err);
             } else {
-                resolve(DynamoDBUser.prototype.getProperties(User));
+                resolve(DynamoDBUser.prototype.getProperties(res.Item));
             }
         });
     });
