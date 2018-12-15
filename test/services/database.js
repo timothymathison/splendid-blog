@@ -1,8 +1,6 @@
 
 const DynamoDBUser = require('../../models/dynamodbuser');
 
-const testPass = process.env.TEST_PASSWORD || 'test_pass';
-
 let users = {};
 
 const createPost = (post) => {

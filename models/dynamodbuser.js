@@ -45,7 +45,7 @@ DynamoDBUser.prototype.getProperties = function(other) {
         Role: u.Role.S,
         FirstName: u.FirstName ? u.FirstName.S : null,
         LastName: u.LastName ? u.LastName.S : null,
-        Email: u.Email ? u.LastName.S : null,
+        Email: u.Email ? u.Email.S : null,
         HashedPassword: u.HashedPassword.S
     };
 }

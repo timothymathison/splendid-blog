@@ -22,7 +22,8 @@
     "start": "concurrently \"npm:server\" \"npm:start:client\"",
     "start:prod": "npm run build:client && NODE_ENV=production npm run server",
     "start:client": "cd client && npm start",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run test:server",
+    "test:server": "mocha",
     "test:pack": "claudia pack"
   },
   "dependencies": {
