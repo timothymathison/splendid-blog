@@ -77,6 +77,10 @@ describe('database:mock', function() {
     // TODO
 });
 
+describe('filestorage:mock', function() {
+    // TODO
+});
+
 describe('auth', function() {
     let auth;
     before(function() {
@@ -144,5 +148,9 @@ describe('auth', function() {
 });
 
 describe('database', function() {
+    // TODO
+});
+
+describe('filestorage', function() {
     // TODO
 });
