@@ -57,8 +57,8 @@ const login = async (req, res) => {
                     token_type: 'Bearer',
                     expires_in: expire
                 });
-            } else { // password doesn't match
-                console.error(err);
+            } else {
+                console.error('Password does not match user');
                 errorUtil.badRequest(res);
             }
         });

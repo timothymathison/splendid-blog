@@ -33,8 +33,8 @@ const saveUser = async (u) => {
     return res;
 };
 
-const testLogin = () => {
-    let body = {
+const testLogin = (b) => {
+    let body = b ? b : {
         id: 'mock_tim',
         password: process.env.TEST_PASSWORD
     };

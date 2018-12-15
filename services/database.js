@@ -52,7 +52,7 @@ const getUser = (id) => {
         };
         dynamodb.getItem(params, (err, res) => {
             if(err) {
-                reject(err);
+                reject(err); // TODO: return custom error
             } else {
                 resolve(DynamoDBUser.prototype.getProperties(res.Item));
             }

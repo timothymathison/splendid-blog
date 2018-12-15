@@ -100,7 +100,7 @@ describe('auth', function() {
 
         before( async function() {
             tokenGenerator = require('./scripts/generatetoken');
-            mockUser = tokenGenerator.createMockUser();
+            mockUser = tokenGenerator.createMockUser(); // see generatetoken.js for mock user details
             await tokenGenerator.saveUser(mockUser);
         });
 
@@ -111,6 +111,34 @@ describe('auth', function() {
             expect(loginResponse.token_type).to.equal('Bearer');
             expect(loginResponse.expires_in).to.be.greaterThan(300);
         });
+
+        it('should reject invalid user id', async function() {
+            let body = {
+                id: 'NOT_mock_tim',
+                password: process.env.TEST_PASSWORD
+            };
+            let loginResponse = await tokenGenerator.testLogin(body);
+            expect(loginResponse.message).to.not.equal('Logged in');
+            expect(loginResponse).to.not.have.property('access_token');
+            expect(loginResponse).to.not.have.property('token_type');
+            expect(loginResponse).to.not.have.property('expires_in');
+        });
+
+        it('should reject invalid user password', async function() {
+            let body = {
+                id: 'mock_tim',
+                password: 'hello1234' // not env.TEST_PASSWORD
+            };
+            let loginResponse = await tokenGenerator.testLogin(body);
+            expect(loginResponse.message).to.not.equal('Logged in');
+            expect(loginResponse).to.not.have.property('access_token');
+            expect(loginResponse).to.not.have.property('token_type');
+            expect(loginResponse).to.not.have.property('expires_in');
+        });
+    });
+
+    describe('#require()', function() {
+        // TODO
     });
 
 });

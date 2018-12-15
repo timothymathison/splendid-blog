@@ -30,7 +30,14 @@ const saveNewUser = (user) => {
 
 const getUser = (id) => {
     // return matching user from users object
-    return new Promise( resolve => resolve(users[id].getProperties()));
+    return new Promise( (resolve, reject) => {
+        let user = users[id];
+        if(user) {
+            resolve(users[id].getProperties())
+        } else {
+            reject(`User '${id}' does not exist`)
+        }  
+    });
 };
 
 module.exports = {
