@@ -4,7 +4,7 @@ const files = {};
 const getFile = (path) => { // TODO: test with raw image files
     return new Promise((resolve, reject) => {
         let file = files[path];
-        if(file) {
+        if(file) { // return buffer to mock aws s3 return  type
             resolve(path.endsWith('.html') ? Buffer.from(file, 'utf-8') : file);
         } else {
             reject(`File ${path} does not exist`)

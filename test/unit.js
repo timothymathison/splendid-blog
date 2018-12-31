@@ -58,26 +58,20 @@ describe('models', function() {
                 expect(User.getProperties()).to.deep.equal(user);
             });
 
-            it('should throw an error when \'ID\' is missing', function() {
-                // TODO
-            });
+            it('should throw an error when \'ID\' is missing'); // TODO
 
-            it('should throw an error when \'Role\' is missing', function() {
-                // TODO
-            });
+            it('should throw an error when \'Role\' is missing'); // TODO
 
-            it('should throw an error when \'HashedPassword\' is missing', function() {
-                // TODO
-            });
+            it('should throw an error when \'HashedPassword\' is missing'); // TODO
         });
     });
 });
 
-describe('database:mock', function() {
+describe.skip('database:mock', function() {
     // TODO
 });
 
-describe('filestorage:mock', function() {
+describe.skip('filestorage:mock', function() {
     // TODO
 });
 
@@ -141,16 +135,16 @@ describe('auth', function() {
         });
     });
 
-    describe('#require()', function() {
+    describe.skip('#require()', function() {
         // TODO
     });
 
 });
 
-describe('database', function() {
+describe.skip('database', function() {
     // TODO
 });
 
-describe('filestorage', function() {
+describe.skip('filestorage', function() {
     // TODO
 });
