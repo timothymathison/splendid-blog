@@ -23,7 +23,7 @@
     "start:prod": "npm run build:client && NODE_ENV=production npm run server",
     "start:client": "cd client && npm start",
     "test": "npm run test:server",
-    "test:server": "mocha",
+    "test:server": "mocha test/unit.js",
     "test:pack": "claudia pack"
   },
   "dependencies": {
