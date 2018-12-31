@@ -14,8 +14,7 @@ router.all('^\/((ping)?|(ping\/)?)$', (req, res) => { // list all get routes
             {path: '/categories/list', method: 'GET'},
             {path: '/auth/login', method: 'POST'},
             {path: '/posts/create', method: "POST"}
-        ],
-        body: process.env
+        ]
     });
 });
 
