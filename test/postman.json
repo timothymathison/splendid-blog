@@ -1,0 +1,265 @@
+{
+	"info": {
+		"_postman_id": "1cf074cc-1967-4c2e-96fd-d337adcfde34",
+		"name": "Splendid Blog",
+		"description": "Use to test splendid-blog api.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Ping",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bd05f1d2-ddc9-4d3a-9e0b-022563fa50d9",
+						"exec": [
+							"",
+							"pm.test('response is ok', function() {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('response header has correct content-type', function() {",
+							"    pm.response.to.have.header('Content-Type');",
+							"    pm.response.to.be.header('Content-Type', 'application/json; charset=utf-8');",
+							"});",
+							"",
+							"pm.test('response body lists all routes', function() {",
+							"    var correctRoutes = [",
+							"            {path: '/ping'},",
+							"            {path: '/categories/list', method: 'GET'},",
+							"            {path: '/auth/login', method: 'POST'},",
+							"            {path: '/posts/create', method: \"POST\"}",
+							"        ];",
+							"    var routes = pm.response.json().routes;",
+							"    pm.expect(routes).to.deep.equal(correctRoutes);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/api/ping",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"ping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Categories",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b1b08224-f70c-4d09-822d-976f256c2085",
+						"exec": [
+							"",
+							"pm.test('response is ok', function() {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('response header has correct content-type', function() {",
+							"    pm.response.to.have.header('Content-Type');",
+							"    pm.response.to.be.header('Content-Type', 'application/json; charset=utf-8');",
+							"});",
+							"",
+							"pm.test('response body lists post category options', function() {",
+							"    var correctCategories = [",
+							"        { id: 'life', label: 'Life' },",
+							"        { id: 'food', label: 'Food' },",
+							"        { id: 'inspiration', label: 'Inspiration' }",
+							"    ];",
+							"    var categories = pm.response.json();",
+							"    pm.expect(categories).to.deep.equal(correctCategories);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/categories/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"categories",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f4c8631f-3147-4f74-adcf-37d3b2bb8844",
+						"exec": [
+							"pm.test('response is ok', function() {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('response header has correct content-type', function() {",
+							"    pm.response.to.have.header('Content-Type');",
+							"    pm.response.to.be.header('Content-Type', 'application/json; charset=utf-8');",
+							"});",
+							"",
+							"pm.test.skip('response body has bearer access token and expiration time');"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"tim\",\n\t\"password\": \"developmentrocks\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "347beeda-e4e6-453e-a691-69dd23cbaa1a",
+						"exec": [
+							"pm.test('response is ok', function() {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('response header has correct content-type', function() {",
+							"    pm.response.to.have.header('Content-Type');",
+							"    pm.response.to.be.header('Content-Type', 'application/json; charset=utf-8');",
+							"});",
+							"",
+							"pm.test.skip('response body is correct'); //TODO: return new post details"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7IklEIjoibW9ja190aW0iLCJSb2xlIjoiYWRtaW4iLCJGaXJzdE5hbWUiOiJUaW1vdGh5IiwiTGFzdE5hbWUiOiJNb2NrIiwiRW1haWwiOiJ0aW1vdGh5QG1vY2suY28iLCJIYXNoZWRQYXNzd29yZCI6IiQyYSQxMCRXamNSZzRNMk9vTExNSUZaazMwUzcuWXRPblNyODQ1WDVzQ2prNkhmZ2FNZE41SGJkOVdJaSJ9LCJpYXQiOjE1NDM3ODIyNDgsImV4cCI6MTU0Mzc4NTg0OH0.Vvtalj_ln_rUeEmE4HAXnbw4PATohe0nwW72ZJ_K-TE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"How to make bannana bread\",\n\t\"htmlBody\": \"<p>paragraph about making bannana bread</p>\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/posts/create/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"posts",
+						"create",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "c9f4fb25-1551-40ba-91c4-9e0e674f3056",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "e1052fc9-0dd9-4477-82f7-4e378f466010",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "3c53ffa8-b02d-41b6-85b9-e5a3f03136e7",
+			"key": "host",
+			"value": "http://localhost:4000",
+			"type": "string"
+		}
+	]
+}
