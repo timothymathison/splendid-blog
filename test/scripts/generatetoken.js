@@ -21,7 +21,8 @@ const createMockUser = () => {
         FirstName: 'Timothy',
         LastName: 'Mock',
         Email: 'timothy@mock.co',
-        HashedPassword: auth.hash(testPass)
+        HashedPassword: auth.hash(testPass),
+        PlainPassword: testPass // included only for testing
     };
 
     return user;

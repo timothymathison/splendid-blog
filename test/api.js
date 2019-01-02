@@ -13,16 +13,20 @@ const server = require('../server');
 const port = process.env.PORT || 4000;
 const listener = server.listen(port, () => console.log(`Listening on port ${port}`)); // start server locally
 
-const address = `http://localhost:${port}`;
+const tokenGenerator = require('./scripts/generatetoken'); // use tokengenerator to generate mock user and token
+const mockUser = tokenGenerator.createMockUser(); // see generatetoken.js for mock user details
+tokenGenerator.saveUser(mockUser).then( () => {
+    // TODO: assign user details to postman environment
 
-newman.run({
-    environment: {'host': address}, // TODO change 'host' to 'address'
-    collection: require('./postman.json'),
-    reporters: 'cli'
-}, (err) => {
-	if (err) { throw err; }
-    console.log('Postman collection run complete!');
+    newman.run({
+        environment: {'address': `http://localhost:${port}`, 'user_id': mockUser.ID, 'user_pass': mockUser.PlainPassword},
+        collection: require('./postman.json'),
+        reporters: 'cli'
+    }, (err) => {
+        if (err) { throw err; }
+        console.log('Postman collection run complete!');
+    });
+    
+    // stop server
+    listener.close();
 });
-
-// stop server
-listener.close();

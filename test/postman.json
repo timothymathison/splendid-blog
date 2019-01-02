@@ -51,9 +51,9 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{host}}/api/ping",
+					"raw": "{{address}}/api/ping",
 					"host": [
-						"{{host}}"
+						"{{address}}"
 					],
 					"path": [
 						"api",
@@ -103,12 +103,10 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:4000/api/categories/list",
-					"protocol": "http",
+					"raw": "{{address}}/api/categories/list",
 					"host": [
-						"localhost"
+						"{{address}}"
 					],
-					"port": "4000",
 					"path": [
 						"api",
 						"categories",
@@ -151,15 +149,13 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"id\": \"tim\",\n\t\"password\": \"developmentrocks\"\n}"
+					"raw": "{\n    \"id\": \"{{user_id}}\",\n    \"password\": \"{{user_pass}}\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:4000/api/auth/login",
-					"protocol": "http",
+					"raw": "{{address}}/api/auth/login",
 					"host": [
-						"localhost"
+						"{{address}}"
 					],
-					"port": "4000",
 					"path": [
 						"api",
 						"auth",
@@ -215,12 +211,10 @@
 					"raw": "{\n\t\"title\": \"How to make bannana bread\",\n\t\"htmlBody\": \"<p>paragraph about making bannana bread</p>\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:4000/api/posts/create/",
-					"protocol": "http",
+					"raw": "{{address}}/api/posts/create/",
 					"host": [
-						"localhost"
+						"{{address}}"
 					],
-					"port": "4000",
 					"path": [
 						"api",
 						"posts",
@@ -256,9 +250,21 @@
 	],
 	"variable": [
 		{
-			"id": "3c53ffa8-b02d-41b6-85b9-e5a3f03136e7",
-			"key": "host",
+			"id": "9ea0212a-a339-4057-a618-c3e201ace6d0",
+			"key": "address",
 			"value": "http://localhost:4000",
+			"type": "string"
+		},
+		{
+			"id": "4caefa18-e566-4160-8a90-6357a04d0784",
+			"key": "user_id",
+			"value": "tim",
+			"type": "string"
+		},
+		{
+			"id": "ece4297b-1b6c-475f-a24a-5ef9c9c0da44",
+			"key": "user_pass",
+			"value": "developmentrocks",
 			"type": "string"
 		}
 	]
