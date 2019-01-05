@@ -11,22 +11,51 @@ console.log(`Setting database to ${process.env.DATABASE}`);
 
 const server = require('../server');
 const port = process.env.PORT || 4000;
-const listener = server.listen(port, () => console.log(`Listening on port ${port}`)); // start server locally
 
-const tokenGenerator = require('./scripts/generatetoken'); // use tokengenerator to generate mock user and token
+const tokenGenerator = require('./scripts/generatetoken'); // use tokengenerator to generate mock user
 const mockUser = tokenGenerator.createMockUser(); // see generatetoken.js for mock user details
-tokenGenerator.saveUser(mockUser).then( () => {
-    // TODO: assign user details to postman environment
 
-    newman.run({
-        environment: {'address': `http://localhost:${port}`, 'user_id': mockUser.ID, 'user_pass': mockUser.PlainPassword},
-        collection: require('./postman.json'),
-        reporters: 'cli'
-    }, (err) => {
-        if (err) { throw err; }
-        console.log('Postman collection run complete!');
-    });
+// start server locally
+const listener = server.listen(port, () => {
+    console.log(`Listening on port ${port}`)
+
+    //save mock user before running postman requests
+    tokenGenerator.saveUser(mockUser).then( () => {
     
-    // stop server
-    listener.close();
+        let postmanEnv = [ // define postman request parameters
+            {
+                "key": "address",
+                "value": `http://localhost:${port}`,
+                "description": "",
+                "enabled": true
+            },
+            {
+                "key": "user_id",
+                "value": mockUser.ID,
+                "type": "text",
+                "description": "",
+                "enabled": true
+            },
+            {
+                "key": "user_pass",
+                "value": mockUser.PlainPassword,
+                "type": "text",
+                "description": "",
+                "enabled": true
+            }
+        ];
+    
+        // run postman requests
+        newman.run({
+            environment: postmanEnv,
+            collection: require('./postman.json'),
+            reporters: 'cli'
+        }, (err) => {
+            if (err) { throw err; }
+            console.log('Postman collection run complete!');
+
+            // stop server
+            listener.close();
+        });
+    });
 });

@@ -247,25 +247,5 @@
 				]
 			}
 		}
-	],
-	"variable": [
-		{
-			"id": "9ea0212a-a339-4057-a618-c3e201ace6d0",
-			"key": "address",
-			"value": "http://localhost:4000",
-			"type": "string"
-		},
-		{
-			"id": "4caefa18-e566-4160-8a90-6357a04d0784",
-			"key": "user_id",
-			"value": "tim",
-			"type": "string"
-		},
-		{
-			"id": "ece4297b-1b6c-475f-a24a-5ef9c9c0da44",
-			"key": "user_pass",
-			"value": "developmentrocks",
-			"type": "string"
-		}
 	]
 }
