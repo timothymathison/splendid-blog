@@ -58,11 +58,38 @@ describe('models', function() {
                 expect(User.getProperties()).to.deep.equal(user);
             });
 
-            it('should throw an error when \'ID\' is missing'); // TODO
+            it('should throw an error when \'ID\' is missing', function() {
+                let user = {
+                    Role: Model.prototype.getRoles().admin,
+                    HashedPassword: 'hashaaabbbccc'
+                };
+                expect(function() { new Model(user) }).to.throw('Invalid user, missing "ID" property');
+            });
 
-            it('should throw an error when \'Role\' is missing'); // TODO
+            it('should throw an error when \'Role\' is missing', function() {
+                let user = {
+                    ID: 'mock_tim',
+                    HashedPassword: 'hashaaabbbccc'
+                };
+                expect(function() { new Model(user) }).to.throw('Invalid user, missing "Role" property');
+            });
 
-            it('should throw an error when \'HashedPassword\' is missing'); // TODO
+            it('should throw an error when \'Role\' is not a valid value', function() {
+                let user = {
+                    ID: 'mock_tim',
+                    Role: 'DoAnything',
+                    HashedPassword: 'hashaaabbbccc'
+                };
+                expect(function() { new Model(user) }).to.throw('Invalid user, "role" propery is not an allowed value');
+            });
+
+            it('should throw an error when \'HashedPassword\' is missing', function() {
+                let user = {
+                    ID: 'mock_tim',
+                    Role: Model.prototype.getRoles().admin
+                };
+                expect(function() { new Model(user) }).to.throw('Invalid user, missing "HashedPassword property');
+            });
         });
     });
 });
