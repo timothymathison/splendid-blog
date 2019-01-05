@@ -133,7 +133,14 @@
 							"    pm.response.to.be.header('Content-Type', 'application/json; charset=utf-8');",
 							"});",
 							"",
-							"pm.test.skip('response body has bearer access token and expiration time');"
+							"pm.test('response body has bearer access token and expiration time', function() {",
+							"    var res = pm.response.json();",
+							"    pm.response.to.have.jsonBody('access_token');",
+							"    pm.response.to.have.jsonBody('expires_in');",
+							"    pm.expect(res.token_type).to.equal('Bearer');",
+							"    ",
+							"    pm.environment.set('user_token', res.access_token);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -194,7 +201,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7IklEIjoibW9ja190aW0iLCJSb2xlIjoiYWRtaW4iLCJGaXJzdE5hbWUiOiJUaW1vdGh5IiwiTGFzdE5hbWUiOiJNb2NrIiwiRW1haWwiOiJ0aW1vdGh5QG1vY2suY28iLCJIYXNoZWRQYXNzd29yZCI6IiQyYSQxMCRXamNSZzRNMk9vTExNSUZaazMwUzcuWXRPblNyODQ1WDVzQ2prNkhmZ2FNZE41SGJkOVdJaSJ9LCJpYXQiOjE1NDM3ODIyNDgsImV4cCI6MTU0Mzc4NTg0OH0.Vvtalj_ln_rUeEmE4HAXnbw4PATohe0nwW72ZJ_K-TE",
+							"value": "{{user_token}}",
 							"type": "string"
 						}
 					]
