@@ -85,7 +85,8 @@ const requireLogin = (role) => (req, res, next) => {
             sendMissingScope(res);
         } else {
             //user has access!
-            console.log(`User ${auth.user.ID} was authorization`); 
+            console.log(`User ${auth.user.ID} was authorization`);
+            req.user = auth.user; // place user in request body
             next();
         }
     }

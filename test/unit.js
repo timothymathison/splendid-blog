@@ -103,7 +103,7 @@ describe.skip('filestorage:mock', function() {
 });
 
 describe('auth', function() {
-    let auth;
+    let auth, mockUser;
     before(function() {
         envLoader({ path: ".env.development.json"});
         process.env['NODE_ENV'] = 'test';
@@ -121,7 +121,7 @@ describe('auth', function() {
     });
 
     describe('#login()', function() {
-        let tokenGenerator, mockUser;
+        let tokenGenerator;
 
         before( async function() {
             tokenGenerator = require('./scripts/generatetoken');
@@ -162,7 +162,30 @@ describe('auth', function() {
         });
     });
 
-    describe.skip('#require()', function() {
+    describe('#require()', function() {
+        let tokenGenerator, loginResponse, errFunc;
+
+        before( async function() {
+            tokenGenerator = require('./scripts/generatetoken');
+            loginResponse = await tokenGenerator.testLogin(); // retrieve token using default user, created in previous test
+
+            errFunc = (done, msg) => () => { done(new Error(msg)) };
+        });
+
+        it('should accept valid token, and place user details in request object', function(done) {
+            let token = loginResponse.access_token;
+            let headers = { 'Authorization': `Bearer ${token}` }
+            let req = { //create request object containing method to access Authorization token
+                get: str => headers[str]
+            };
+            let res = { // create response object containing send method
+                send: errFunc(done, 'token not found/recognized'),
+                status: (num) => ({send: errFunc(done, 'token not found/recognized')})
+            };
+            auth.require(mockUser.Role)(req, res, () => {
+                expect(req.user).to.deep.equal(mockUser); // needs to compare only certain fields
+            });
+        });
         // TODO
     });
 
