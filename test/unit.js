@@ -183,10 +183,24 @@ describe('auth', function() {
                 status: (num) => ({send: errFunc(done, 'token not found/recognized')})
             };
             auth.require(mockUser.Role)(req, res, () => {
-                expect(req.user).to.deep.equal(mockUser); // needs to compare only certain fields
+                expect(req.user).to.deep.equal({
+                    ID: mockUser.ID,
+                    Role: mockUser.Role,
+                    FirstName: mockUser.FirstName,
+                    LastName: mockUser.LastName,
+                    Email: mockUser.Email
+                });
+                done();
             });
         });
-        // TODO
+
+        it('should reject request with missing token');
+
+        it('should reject invalid token');
+
+        it('should reject token with incorrect user role');
+
+        it('should reject expired token');
     });
 
 });

@@ -49,7 +49,14 @@ const login = async (req, res) => {
         let hashedPass = u.HashedPassword;
         bcrypt.compare(req.body.password, hashedPass, (err, match) => {
             if(match === true) {
-                let token = generateToken(u, secret);
+                let user = {
+                    ID: u.ID,
+                    Role: u.Role,
+                    Email: u.Email,
+                    FirstName: u.FirstName,
+                    LastName: u.LastName
+                }; // user info excluding hashed password
+                let token = generateToken(user, secret);
                 console.log(`User ${u.ID} logged in`);
                 res.send({
                     message: 'Logged in',
