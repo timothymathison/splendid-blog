@@ -22,8 +22,9 @@
     "start": "concurrently \"npm:server\" \"npm:start:client\"",
     "start:prod": "npm run build:client && NODE_ENV=production npm run server",
     "start:client": "cd client && npm start",
-    "test": "npm run test:server",
-    "test:server": "mocha test/unit.js",
+    "test": "npm run test:server:unit",
+    "test:server:unit": "mocha test/unit.test.js",
+    "test:server:api": "node test/api.test.js",
     "test:pack": "claudia pack"
   },
   "dependencies": {
