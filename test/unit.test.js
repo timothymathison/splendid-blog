@@ -1,6 +1,8 @@
 const expect = require('chai').expect;
 const envLoader = require('dotenv-json');
 
+const { notFoundMsg, badRequestMsg, serverErrorMsg } = require('../utils/errors');
+
 describe('models', function() {
     describe('DynamoDBUser', function() {
         let Model = require('../models/dynamodbuser');
@@ -163,24 +165,25 @@ describe('auth', function() {
     });
 
     describe('#require()', function() {
-        let tokenGenerator, loginResponse, errFunc;
+        let tokenGenerator, loginResponse, errFunc, token, headers;
 
         before( async function() {
             tokenGenerator = require('./scripts/generatetoken');
             loginResponse = await tokenGenerator.testLogin(); // retrieve token using default user, created in previous test
+            token = loginResponse.access_token;
 
+            headers = { 'Authorization': `Bearer ${token}` };
             errFunc = (done, msg) => () => { done(new Error(msg)) };
         });
 
         it('should accept valid token, and place user details in request object', function(done) {
-            let token = loginResponse.access_token;
-            let headers = { 'Authorization': `Bearer ${token}` }
             let req = { //create request object containing method to access Authorization token
                 get: str => headers[str]
             };
-            let res = { // create response object containing send method
-                send: errFunc(done, 'token not found/recognized'),
-                status: (num) => ({send: errFunc(done, 'token not found/recognized')})
+            let send = errFunc(done, 'token not found/recognized')
+            let res = { // create response object containing send method (only) used if error
+                send,
+                status: () => ({ send })
             };
             auth.require(mockUser.Role)(req, res, () => {
                 expect(req.user).to.deep.equal({
@@ -194,11 +197,83 @@ describe('auth', function() {
             });
         });
 
-        it('should reject request with missing token');
+        it('should reject request with missing authorization', function(done) {
+            let req = { //create request object containing method to access Authorization token
+                get: () => undefined
+            };
+            let send = r => {
+                expect(r.message).to.equal(notFoundMsg);
+                done();
+            };
+            let res = { // create response object containing send method
+                send,
+                status: code => {
+                    expect(code).to.equal(404);
+                    return { send };
+                }
+            };
+            auth.require(mockUser.Role)(req, res, errFunc(done, 'request should have been rejected'));
+        });
 
-        it('should reject invalid token');
+        it('should reject invalid token', function(done) {
+            let headers = { 'Authorization': 'Bearer letmein' };
+            let req = { //create request object containing method to access Authorization token
+                get: str => headers[str]
+            };
+            let send = r => {
+                expect(r.message).to.equal('Invalid Authorization token');
+                done();
+            };
+            let res = {
+                send,
+                status: code => {
+                    expect(code).to.equal(401);
+                    return { send };
+                },
+                setHeader: (key, value) => {
+                    expect(key).to.equal('WWW-Authenticate');
+                    expect(value).to.contain('error="invalid_token"');
+                }
+            };
+            auth.require(mockUser.Role)(req, res, errFunc(done, 'request should have been rejected'));
+        });
 
-        it('should reject token with incorrect user role');
+        it('should reject token with incorrect user role', function(done) {
+            tokenGenerator.saveUser({
+                ID: 'not_tim',
+                Role: 'user', // not equal to mockUser.Role
+                HashedPassword: mockUser.HashedPassword
+            }).then(() => {
+                tokenGenerator.testLogin({
+                    id: 'not_tim',
+                    password: mockUser.PlainPassword
+                }).then(r => {
+                    let token = r.access_token;
+
+                    let headers = { 'Authorization': `Bearer ${token}` };
+                    let req = { //create request object containing method to access Authorization token
+                        get: str => headers[str]
+                    };
+                    let send = r => {
+                        expect(r.message).to.equal('User identified by authorization token has incorrect role');
+                        done();
+                    };
+                    let res = {
+                        send,
+                        status: code => {
+                            expect(code).to.equal(403);
+                            return { send };
+                        },
+                        setHeader: (key, value) => {
+                            expect(key).to.equal('WWW-Authenticate');
+                            expect(value).to.contain('error="insufficient_scope"');
+
+                        }
+                    };
+                    auth.require(mockUser.Role)(req, res, errFunc(done, 'request should have been rejected'));
+                });
+            });
+        });  
 
         it('should reject expired token');
     });

@@ -79,8 +79,10 @@ const login = async (req, res) => {
 const requireLogin = (role) => (req, res, next) => {
     let token = req.get('Authorization');
     if(!token) { //request has no authorization whatsoever, assume taking the current route was a mistake
+        console.error('Authorization missing');
         errorUtil.notFound(res);
     } else if(!token.startsWith('Bearer ')) {
+        console.error('Invalid authorization type');
         sendInvalid(res);
     } else {
         //check token validity
