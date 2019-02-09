@@ -12,15 +12,15 @@ console.log(`Setting database to ${process.env.DATABASE}`);
 const server = require('../server');
 const port = process.env.PORT || 4000;
 
-const tokenGenerator = require('./scripts/generatetoken'); // use tokengenerator to generate mock user
-const mockUser = tokenGenerator.createMockUser(); // see generatetoken.js for mock user details
+const authUtil = require('./scripts/auth-utils'); // use authUtil to generate mock user
+const mockUser = authUtil.createMockUser(); // see auth-utils.js for mock user details
 
 // start server locally
 const listener = server.listen(port, () => {
     console.log(`Listening on port ${port}`)
 
     //save mock user before running postman requests
-    tokenGenerator.saveUser(mockUser).then( () => {
+    authUtil.saveUser(mockUser).then( () => {
     
         let postmanEnv = [ // define postman request parameters
             {

@@ -123,16 +123,16 @@ describe('auth', function() {
     });
 
     describe('#login()', function() {
-        let tokenGenerator;
+        let authUtil;
 
         before( async function() {
-            tokenGenerator = require('./scripts/generatetoken');
-            mockUser = tokenGenerator.createMockUser(); // see generatetoken.js for mock user details
-            await tokenGenerator.saveUser(mockUser);
+            authUtil = require('./scripts/auth-utils');
+            mockUser = authUtil.createMockUser(); // see auth-utils.js for mock user details
+            await authUtil.saveUser(mockUser);
         });
 
         it('should successfully login mock user', async function() {
-            let loginResponse = await tokenGenerator.testLogin()
+            let loginResponse = await authUtil.login()
             expect(loginResponse.message).to.equal('Logged in');
             expect(loginResponse).to.have.property('access_token');
             expect(loginResponse.token_type).to.equal('Bearer');
@@ -144,7 +144,7 @@ describe('auth', function() {
                 id: 'NOT_mock_tim',
                 password: process.env.TEST_PASSWORD
             };
-            let loginResponse = await tokenGenerator.testLogin(body);
+            let loginResponse = await authUtil.login(body);
             expect(loginResponse.message).to.not.equal('Logged in');
             expect(loginResponse).to.not.have.property('access_token');
             expect(loginResponse).to.not.have.property('token_type');
@@ -156,7 +156,7 @@ describe('auth', function() {
                 id: 'mock_tim',
                 password: 'hello1234' // not env.TEST_PASSWORD
             };
-            let loginResponse = await tokenGenerator.testLogin(body);
+            let loginResponse = await authUtil.login(body);
             expect(loginResponse.message).to.not.equal('Logged in');
             expect(loginResponse).to.not.have.property('access_token');
             expect(loginResponse).to.not.have.property('token_type');
@@ -165,11 +165,11 @@ describe('auth', function() {
     });
 
     describe('#require()', function() {
-        let tokenGenerator, loginResponse, errFunc, token, headers;
+        let authUtil, loginResponse, errFunc, token, headers;
 
         before( async function() {
-            tokenGenerator = require('./scripts/generatetoken');
-            loginResponse = await tokenGenerator.testLogin(); // retrieve token using default user, created in previous test
+            authUtil = require('./scripts/auth-utils');
+            loginResponse = await authUtil.login(); // retrieve token using default user, created in previous test
             token = loginResponse.access_token;
 
             headers = { 'Authorization': `Bearer ${token}` };
@@ -239,12 +239,12 @@ describe('auth', function() {
         });
 
         it('should reject token with incorrect user role', function(done) {
-            tokenGenerator.saveUser({
+            authUtil.saveUser({
                 ID: 'not_tim',
                 Role: 'user', // not equal to mockUser.Role
                 HashedPassword: mockUser.HashedPassword
             }).then(() => {
-                tokenGenerator.testLogin({
+                authUtil.login({
                     id: 'not_tim',
                     password: mockUser.PlainPassword
                 }).then(r => {

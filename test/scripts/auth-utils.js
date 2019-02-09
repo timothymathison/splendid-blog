@@ -7,8 +7,8 @@ if(process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
     console.log(`Setting database to ${process.env.DATABASE}`);
 }
 
-const mockDatabase = process.env['DATABASE'];
-const db = require(`../../${mockDatabase}`);
+const dbService = process.env['DATABASE'];
+const db = require(`../../${dbService}`);
 const auth = require('../../services/auth');
 
 const createMockUser = () => {
@@ -34,7 +34,7 @@ const saveUser = async (u) => {
     return res;
 };
 
-const testLogin = (b) => {
+const login = (b) => {
     let body = b ? b : {
         id: 'mock_tim',
         password: process.env.TEST_PASSWORD
@@ -47,7 +47,7 @@ const testLogin = (b) => {
 
 if(process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
     saveUser().then(() => {
-        testLogin().then(res => {
+        login().then(res => {
             console.log(res);
         })
     });
@@ -56,5 +56,5 @@ if(process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
 module.exports = {
     createMockUser,
     saveUser,
-    testLogin
+    login
 };
