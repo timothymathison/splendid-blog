@@ -8,7 +8,7 @@ const db = require(`../${useDB}`);
 //constants
 const realm = 'april.blog';
 const secret = process.env.SERVER_SECRET;
-const expire = 60 * 60; // by default tokens expire in 1 hour
+const expire = parseInt(process.env.TOKEN_EXPIRE_TIME || 60 * 60); // by default tokens expire in 1 hour
 const saltNum = 13; // number of rounds used to generage salt for hashing passwords
 
 //generate a password hash which can be safely stored

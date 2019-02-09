@@ -105,13 +105,15 @@ describe.skip('filestorage:mock', function() {
 });
 
 describe('auth', function() {
-    let auth, mockUser;
+    let auth, mockUser, tokenExpire;
     before(function() {
         envLoader({ path: ".env.development.json"});
         process.env['NODE_ENV'] = 'test';
         process.env['DATABASE'] = 'test/services/database'; // use mock database
         console.log(`Setting database to ${process.env.DATABASE}`);
 
+        tokenExpire = 3;
+        process.env['TOKEN_EXPIRE_TIME'] = tokenExpire; // set token to expire in 3 seconds
         auth = require('../services/auth');
     });
 
@@ -136,7 +138,7 @@ describe('auth', function() {
             expect(loginResponse.message).to.equal('Logged in');
             expect(loginResponse).to.have.property('access_token');
             expect(loginResponse.token_type).to.equal('Bearer');
-            expect(loginResponse.expires_in).to.be.greaterThan(300);
+            expect(loginResponse.expires_in).to.be.equal(tokenExpire);
         });
 
         it('should reject invalid user id', async function() {
@@ -180,7 +182,7 @@ describe('auth', function() {
             let req = { //create request object containing method to access Authorization token
                 get: str => headers[str]
             };
-            let send = errFunc(done, 'token not found/recognized')
+            let send = errFunc(done, 'token not found/recognized');
             let res = { // create response object containing send method (only) used if error
                 send,
                 status: () => ({ send })
@@ -275,7 +277,38 @@ describe('auth', function() {
             });
         });  
 
-        it('should reject expired token');
+        it('should reject expired token', function(done) {
+            this.timeout(10000);
+            authUtil.login({
+                id: mockUser.ID,
+                password: mockUser.PlainPassword
+            }).then(async r => {
+                const token = r.access_token;
+                const headers = { 'Authorization': `Bearer ${token}` };
+                const req = { //create request object containing method to access Authorization token
+                    get: str => headers[str]
+                };
+                const send = r => {
+                    expect(r.message).to.equal('Invalid Authorization token');
+                    done();
+                };
+                const res = { // create response object containing send method (only) used if error
+                    send,
+                    status: code => {
+                        expect(code).to.equal(401);
+                        return { send };
+                    },
+                    status: () => ({ send }),
+                    setHeader: (key, value) => {
+                        expect(key).to.equal('WWW-Authenticate');
+                        expect(value).to.contain('error="invalid_token"');
+                    }
+                };
+                const delay = () => new Promise(resolve => setTimeout(resolve, 3000));
+                await delay(); // delay to let token expire
+                auth.require(mockUser.Role)(req, res, errFunc(done, 'request should have been rejected'));
+            });
+        });
     });
 
 });
