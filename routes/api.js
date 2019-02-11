@@ -3,6 +3,7 @@ const router = express.Router();
 
 const errorUtil = require('../utils/errors');
 const postRouter = require('./posts');
+const mediaRouter = require('./media');
 const categoryRouter = require('./categories');
 const authRouter = require('./auth');
 
@@ -19,6 +20,8 @@ router.all('^\/((ping)?|(ping\/)?)$', (req, res) => { // list all get routes
 });
 
 router.use('/posts', postRouter); //send post related requests to posts route
+
+router.use('/media', mediaRouter);
 
 router.use('/categories', categoryRouter); //send category related requests to categories route
 
