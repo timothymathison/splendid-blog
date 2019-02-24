@@ -19,6 +19,11 @@ router.all('^\/((ping)?|(ping\/)?)$', (req, res) => { // list all get routes
     });
 });
 
+router.use('*', (req, res, next) => {
+    console.log(`Request: ${req.method} -> ${req.baseUrl}`);
+    next();
+});
+
 router.use('/posts', postRouter); //send post related requests to posts route
 
 router.use('/media', mediaRouter);
