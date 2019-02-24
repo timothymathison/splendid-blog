@@ -19,6 +19,21 @@ const getFile = (path) => { // TODO: test with raw image files
     });
 };
 
+const fileExists = (path) => {
+    return new Promise((resolve, reject) => {
+        let params = {
+            Bucket: bucketName,
+            Key: path
+        };
+        s3.headObject(params, err => {
+            if(err) {
+                if(err.code === 'NotFound') resolve(false);
+                else throw err;
+            } else resolve(true);
+        })
+    });
+}
+
 const saveFile = (path, data) => { // TODO: test with raw image files
     return new Promise((resolve, reject) => {
         if(!path.match(new RegExp('^[A-Za-z0-9].*'))) {
@@ -40,7 +55,25 @@ const saveFile = (path, data) => { // TODO: test with raw image files
     });
 };
 
+const deleteFile = (path) => {
+    return new Promise((resolve, reject) => {
+        let params = {
+            Bucket: bucketName,
+            Key: path
+        };
+        s3.deleteObject(params, err => {
+            if(err) {
+                reject(err);
+            } else {
+                resolve(true);
+            }
+        });
+    });
+};
+
 module.exports = {
     get: getFile,
-    save: saveFile
+    save: saveFile,
+    delete: deleteFile,
+    exists: fileExists
 };
