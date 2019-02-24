@@ -108,7 +108,6 @@ describe('auth', function() {
     let auth, mockUser, tokenExpire;
     before(function() {
         envLoader({ path: ".env.development.json"});
-        process.env['NODE_ENV'] = 'test';
         process.env['DATABASE'] = 'test/services/database'; // use mock database
         console.log(`Setting database to ${process.env.DATABASE}`);
 

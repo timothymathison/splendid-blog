@@ -11,9 +11,9 @@ const dbService = process.env['DATABASE'];
 const db = require(`../../${dbService}`);
 const auth = require('../../services/auth');
 
+const testPass = Math.random().toString(36).substring(2); // generate random test password
+
 const createMockUser = () => {
-    let testPass = Math.random().toString(36).substring(2); // generate random test password
-    process.env['TEST_PASSWORD'] = testPass;
 
     let user = {
         ID: 'mock_tim',
@@ -37,7 +37,7 @@ const saveUser = async (u) => {
 const login = (b) => {
     let body = b ? b : {
         id: 'mock_tim',
-        password: process.env.TEST_PASSWORD
+        password: testPass
     };
 
     return new Promise((resolve) => {

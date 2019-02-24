@@ -6,7 +6,7 @@ const api = require('./routes/api')
 
 server.use('/api', api);
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test') {
     // Serve any static files
     server.use(express.static(path.join(__dirname, 'client/build')));
 

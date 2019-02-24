@@ -6,7 +6,7 @@ const useDB = process.env.DATABASE || 'services/database'
 const db = require(`../${useDB}`);
 
 //constants
-const realm = 'april.blog';
+const realm = 'aprilnotthemonth';
 const secret = process.env.SERVER_SECRET;
 const expire = parseInt(process.env.TOKEN_EXPIRE_TIME || 60 * 60); // by default tokens expire in 1 hour
 const saltNum = 13; // number of rounds used to generage salt for hashing passwords
@@ -19,7 +19,7 @@ const hashPassword = (pass) => {
 
 //generate a new token with user info as the payload
 const generateToken = (user, secret) => {
-    return jwt.sign({ user: user }, secret, {expiresIn: expire});
+    return jwt.sign({ user: user, realm: realm }, secret, {expiresIn: expire});
 };
 
 //verify token is valid and return the payload

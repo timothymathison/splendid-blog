@@ -13,7 +13,7 @@ const mediaRegex = new RegExp('^[A-Za-z0-9_\-]+\.(jpg|jpeg|png|gif)$');
 const mediaTypeRegex = new RegExp('image\/(jpg|jpeg|png|gif)');
 const pathRegex = new RegExp('^[A-Za-z0-9]+$');
 
-router.use(bodyParser.raw({ type: (req) => req.get('Content-Type').match(mediaTypeRegex)}));
+router.use(bodyParser.raw({ limit: '50mb', type: (req) => req.get('Content-Type').match(mediaTypeRegex)}));
 
 router.get('/:postId/:filename', async (req, res) => {
     const { postId, filename } = req.params;
