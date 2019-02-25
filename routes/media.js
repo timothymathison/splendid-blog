@@ -17,6 +17,7 @@ router.use(bodyParser.raw({ limit: '50mb', type: (req) =>
     req.get('Content-Type') && req.get('Content-Type').match(mediaTypeRegex)
 }));
 
+// get image/media cooresponding to a particular post
 router.get('/:postId/:filename', async (req, res) => {
     const { postId, filename } = req.params;
     const matchMedia = filename.match(mediaRegex);
@@ -39,6 +40,7 @@ router.get('/:postId/:filename', async (req, res) => {
     }
 });
 
+// upload media/image logic
 const postPutCommon = overwrite => async (req, res) => {
     const { postId, filename } = req.params;
     const matchMedia = filename.match(mediaRegex);
@@ -72,8 +74,9 @@ const postPutCommon = overwrite => async (req, res) => {
     }
 }
 
+// upload image, will overwrite, TOOD: support updating/copying to different path
 router.post('/:postId/:filename', authService.require(roles.admin), postPutCommon(true));
-
+// upload image, overwrite prohibited
 router.put('/:postId/:filename', authService.require(roles.admin), postPutCommon(false));
 
 router.delete('/:postId/:filename', authService.require(roles.admin), async (req, res) => {
