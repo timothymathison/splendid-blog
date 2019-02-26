@@ -1,14 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const defaults = [
-    { id: 'life', label: 'Life' },
-    { id: 'food', label: 'Food' },
-    { id: 'inspiration', label: 'Inspiration' }
-];
+const categories = require('../models/DynamoDBPost')
+    .prototype.getCategories();
 
 router.get('/list', (req, res) => {
-    res.send(defaults); //send hardcoded defaults
+    res.send(categories); //send hardcoded defaults
 });
 
 module.exports = router;
