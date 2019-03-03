@@ -113,7 +113,7 @@ describe('auth', function() {
 
         tokenExpire = 3;
         process.env['TOKEN_EXPIRE_TIME'] = tokenExpire; // set token to expire in 3 seconds
-        auth = require('../services/auth');
+        auth = require('../controllers/auth');
     });
 
     describe('#hash()', function() {

@@ -9,7 +9,7 @@ if(process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
 
 const dbService = process.env['DATABASE'];
 const db = require(`../../${dbService}`);
-const auth = require('../../services/auth');
+const auth = require('../../controllers/auth');
 
 const testPass = Math.random().toString(36).substring(2); // generate random test password
 
@@ -40,8 +40,12 @@ const login = (b) => {
         password: testPass
     };
 
-    return new Promise((resolve) => {
-        auth.login({ body: body }, { send: resolve, status: (num) => ({send: resolve}) });
+    let resObj = resolve => ({
+        send: resolve, status: (num) => ({send: resolve})
+    });
+
+    return new Promise(async (resolve) => {
+        (await auth.login({ body: body }))(resObj(resolve));
     });
 };
 

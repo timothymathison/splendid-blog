@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
 
-const authService = require('../services/auth')
+const authService = require('../controllers/auth')
 
 router.use(bodyParser.json());
 

@@ -32,31 +32,31 @@ const verifyToken = (token, secret) => {
     }
 };
 
-const sendInvalid = (res) => {
+const sendInvalid = res => {
     res.setHeader('WWW-Authenticate', `Bearer realm=${realm}, error="invalid_token"`); //TODO: include error_description
     res.status(401).send({ message: 'Invalid Authorization token' });
 };
 
-const sendMissingScope = (res) => {
+const sendMissingScope = res => {
     res.setHeader('WWW-Authenticate', `Bearer realm=${realm}, error="insufficient_scope"`); //TODO: include error_description
     res.status(403).send({ message: 'User identified by authorization token has incorrect role' });
 }
 
-//TODO: consider using somthing like passport.js
-const login = async (req, res) => {
+const login = async req => {
     try {
         let u = await db.user.get(req.body.id); // retrieve user from database
         let hashedPass = u.HashedPassword;
-        bcrypt.compare(req.body.password, hashedPass, (err, match) => {
-            if(match === true) {
-                let user = {
-                    ID: u.ID,
-                    Role: u.Role,
-                    Email: u.Email,
-                    FirstName: u.FirstName,
-                    LastName: u.LastName
-                }; // user info excluding hashed password
-                let token = generateToken(user, secret);
+        let match = await bcrypt.compare(req.body.password, hashedPass);
+        if(match === true) {
+            let user = {
+                ID: u.ID,
+                Role: u.Role,
+                Email: u.Email,
+                FirstName: u.FirstName,
+                LastName: u.LastName
+            }; // user info excluding hashed password
+            let token = generateToken(user, secret);
+            return res => {
                 console.log(`User ${u.ID} logged in`);
                 res.send({
                     message: 'Logged in',
@@ -64,14 +64,18 @@ const login = async (req, res) => {
                     token_type: 'Bearer',
                     expires_in: expire
                 });
-            } else {
+            };
+        } else {
+            return res => {
                 console.error('Password does not match user');
                 errorUtil.badRequest(res);
-            }
-        });
+            };
+        }
     } catch(err) { // error retrieving the user
-        console.error(err);
-        errorUtil.badRequest(res);
+        return res => {
+            console.error(err);
+            errorUtil.badRequest(res);
+        };
     }
 };
 

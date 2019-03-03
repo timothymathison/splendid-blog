@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
 
-const authService = require('../services/auth');
+const authService = require('../controllers/auth');
 const roles = require('../models/DynamoDBUser').prototype.getRoles();
 
 const controller = require('../controllers/media');
