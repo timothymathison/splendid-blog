@@ -1,6 +1,6 @@
 const newman = require('newman');
 const envLoader = require('dotenv-json');
-envLoader({ path: ".env.development.json"}); // load development environment
+envLoader({ path: "server/config/.env.development.json"}); // load development environment
 
 console.log('Test API Routes, running Postman collection...');
 
@@ -9,7 +9,7 @@ process.env['NODE_ENV'] = 'test';
 process.env['DATABASE'] = 'test/services/database'; // use mock database
 console.log(`Setting database to ${process.env.DATABASE}`);
 
-const server = require('../server');
+const server = require('../main/server');
 const port = process.env.PORT || 4000;
 
 const authUtil = require('./scripts/auth-utils'); // use authUtil to generate mock user

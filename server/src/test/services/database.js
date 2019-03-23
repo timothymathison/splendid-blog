@@ -1,5 +1,5 @@
 
-const DynamoDBUser = require('../../models/dynamodbuser');
+const DynamoDBUser = require('../../main/models/dynamodbuser');
 
 let users = {};
 

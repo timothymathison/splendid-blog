@@ -2,9 +2,9 @@ const envLoader = require('dotenv-json');
 
 // load development environment variables
 if (process.env.NODE_ENV !== 'production') {
-    envLoader({ path: ".env.development.json"});
+    envLoader({ path: "server/config/.env.development.json"});
 } else {
-    envLoader({ path: ".env.production.local.json"})
+    envLoader({ path: "server/config/.env.production.local.json"})
 }
 
 const server = require('./server.js');

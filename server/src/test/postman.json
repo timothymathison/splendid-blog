@@ -166,7 +166,7 @@
 						"body": {
 							"mode": "file",
 							"file": {
-								"src": "./test/media/p1.jpg" 
+								"src": "./server/src/test/media/p1.jpg" 
 							}
 						},
 						"url": {
@@ -222,7 +222,7 @@
 						"body": {
 							"mode": "file",
 							"file": {
-								"src": "./test/media/p1.jpg" 
+								"src": "./server/src/test/media/p1.jpg" 
 							}
 						},
 						"url": {
@@ -289,7 +289,7 @@
 						"body": {
 							"mode": "file",
 							"file": {
-								"src": "./test/media/p1.jpg" 
+								"src": "./server/src/test/media/p1.jpg" 
 							}
 						},
 						"url": {
@@ -458,7 +458,7 @@
 						"body": {
 							"mode": "file",
 							"file": {
-								"src": "./test/media/p1.jpg" 
+								"src": "./server/src/test/media/p1.jpg" 
 							}
 						},
 						"url": {

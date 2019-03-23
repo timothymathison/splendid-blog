@@ -1,6 +1,6 @@
 
-const db = require(`../${process.env.DATABASE || 'services/database'}`);
-const fileStorage = require(`../${process.env.FILE_STORAGE || 'services/filestorage'}`);
+const db = require(`../../${process.env.DATABASE || 'main/services/database'}`);
+const fileStorage = require(`../../${process.env.FILE_STORAGE || 'main/services/filestorage'}`);
 const sendError = require('../utils/errors');
 
 // create and save a post

@@ -1,11 +1,11 @@
 const expect = require('chai').expect;
 const envLoader = require('dotenv-json');
 
-const { notFoundMsg, badRequestMsg, serverErrorMsg } = require('../utils/errors');
+const { notFoundMsg, badRequestMsg, serverErrorMsg } = require('../main/utils/errors');
 
 describe('models', function() {
     describe('DynamoDBUser', function() {
-        let Model = require('../models/dynamodbuser');
+        let Model = require('../main/models/dynamodbuser');
         describe('#getRoles()', function() {
             it('should return the correct roles', function() {
                 expect(Model.prototype.getRoles()).to.deep.equal({ user: 'user', admin: 'admin' })
@@ -107,13 +107,13 @@ describe.skip('filestorage:mock', function() {
 describe('auth', function() {
     let auth, mockUser, tokenExpire;
     before(function() {
-        envLoader({ path: ".env.development.json"});
+        envLoader({ path: "server/config/.env.development.json"});
         process.env['DATABASE'] = 'test/services/database'; // use mock database
         console.log(`Setting database to ${process.env.DATABASE}`);
 
         tokenExpire = 3;
         process.env['TOKEN_EXPIRE_TIME'] = tokenExpire; // set token to expire in 3 seconds
-        auth = require('../controllers/auth');
+        auth = require('../main/controllers/auth');
     });
 
     describe('#hash()', function() {
