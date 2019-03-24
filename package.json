@@ -4,12 +4,7 @@
   "description": "Uses ReactJS and Express for NodeJS to create a dynamic blog website",
   "main": "lambda.js",
   "files": [
-    "controllers/",
-    "models/",
-    "services/",
-    "utils/",
-    "routes/",
-    "server.js",
+    "server/src/main/",
     "client/build/"
   ],
   "scripts": {
