@@ -1,8 +1,8 @@
 const envLoader = require('dotenv-json');
 envLoader({ path: "server/config/.env.development.json"});
 
-const db = require('../services/database');
-const auth = require('../controllers/auth');
+const db = require('../src/main/services/database');
+const auth = require('../src/main/controllers/auth');
 
 let args = process.argv;
 
