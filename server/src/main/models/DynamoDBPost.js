@@ -24,6 +24,12 @@ function DynamoDBPost(p) {
         throw 'Invalid post, missing "title" property';
     }
 
+    if(p.createdTime) {
+        this.CreatedTime = { S: p.createdTime };
+    } else {
+        throw 'Invalid post, missing "createdTime" property'
+    }
+
     if(p.category) {
         if(categories.some(c => c.id === p.category)) {
             this.Category = { S: p.category };

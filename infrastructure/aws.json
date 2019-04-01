@@ -34,7 +34,7 @@
                         "AttributeType": "S"
                     },
                     {
-                        "AttributeName": "Created",
+                        "AttributeName": "CreatedTime",
                         "AttributeType": "S"
                     },
                     {
@@ -48,7 +48,7 @@
                         "KeyType": "HASH"
                     },
                     {
-                        "AttributeName": "Created",
+                        "AttributeName": "CreatedTime",
                         "KeyType": "RANGE"
                     }
                 ],

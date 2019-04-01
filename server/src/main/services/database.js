@@ -1,12 +1,33 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
 const DynamoDBUser = require('../models/DynamoDBUser');
+const DynamoDBPost = require('../models/DynamoDBPost');
 
 const postsTable = process.env.AWS_POST_TABLE || 'SplendidBlogPosts'; //define from env otherwise default
 const usersTable = process.env.AWS_USER_TABLE || 'SplendidBlogUsers';
 
+//save a new post database entry and return success
 const createPost = (post) => {
-    //save a new post database entry and return success
+    return new Promise((resolve, reject) => {
+        try {
+            const Post = new DynamoDBPost(post);
+            const dbParams = {
+                Item: post,
+                TableName: postsTable,
+                ConditionExpression: 'attribute_not_exists(ID)'
+            };
+            // save new post in database
+            dynamodb.putItem(dbParams, (err, data) => {
+                if(err) {
+                    reject(err);
+                } else {
+                    resolve(Post);
+                }
+            });
+        } catch(e) {
+            reject(e);
+        }
+    });
 };
 
 const getPost = (id) => {
@@ -26,14 +47,14 @@ const saveNewUser = (user) => {
                 TableName: usersTable,
                 ConditionExpression: 'attribute_not_exists(ID)'
             };
-            // save new user in database, TODO: check whether user already exists
+            // save new user in database
             dynamodb.putItem(dbParams, (err, data) => {
                 if(err) {
                     reject(err);
                 } else {
                     resolve(user);
                 }
-            })
+            });
         } catch(e) {
             reject(e);
         }
