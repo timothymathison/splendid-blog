@@ -20,7 +20,7 @@ const saveNewUser = (user) => {
     return new Promise((resolve, reject) => {
         try {
             let User = new DynamoDBUser(user);
-            users[user.ID] = User;
+            users[user.id] = User;
             resolve(user);
         } catch(err) {
            reject(err);

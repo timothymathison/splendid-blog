@@ -31,14 +31,14 @@ const listener = server.listen(port, () => {
             },
             {
                 "key": "user_id",
-                "value": mockUser.ID,
+                "value": mockUser.id,
                 "type": "text",
                 "description": "",
                 "enabled": true
             },
             {
                 "key": "user_pass",
-                "value": mockUser.PlainPassword,
+                "value": mockUser.plainPassword,
                 "type": "text",
                 "description": "",
                 "enabled": true

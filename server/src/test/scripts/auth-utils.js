@@ -16,13 +16,13 @@ const testPass = Math.random().toString(36).substring(2); // generate random tes
 const createMockUser = () => {
 
     let user = {
-        ID: 'mock_tim',
-        Role: db.user.getRoles().admin,
-        FirstName: 'Timothy',
-        LastName: 'Mock',
-        Email: 'timothy@mock.co',
-        HashedPassword: auth.hash(testPass),
-        PlainPassword: testPass // included only for testing
+        id: 'mock_tim',
+        role: db.user.getRoles().admin,
+        firstName: 'Timothy',
+        lastName: 'Mock',
+        email: 'timothy@mock.co',
+        hashedPassword: auth.hash(testPass),
+        plainPassword: testPass // included only for testing
     };
 
     return user;

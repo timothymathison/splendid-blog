@@ -14,83 +14,83 @@ describe('models', function() {
         describe('#DynamoDBUser()', function() {
             it('should create a minimal database user object without error', function() {
                 let user = {
-                    ID: 'mock_tim',
-                    Role: Model.prototype.getRoles().admin,
-                    HashedPassword: 'hashaaabbbccc'
+                    id: 'mock_tim',
+                    role: Model.prototype.getRoles().admin,
+                    hashedPassword: 'hashaaabbbccc'
                 };
                 let User = new Model(user);
                 expect(User).to.have.property('ID');
-                expect(User.ID).to.deep.equal({ "S": user.ID });
-                expect(user).to.have.property('Role');
-                expect(User.Role).to.deep.equal({ "S": user.Role });
+                expect(User.ID).to.deep.equal({ "S": user.id });
+                expect(User).to.have.property('Role');
+                expect(User.Role).to.deep.equal({ "S": user.role });
                 expect(User).to.have.property('HashedPassword');
-                expect(User.HashedPassword).to.deep.equal({ "S": user.HashedPassword });
+                expect(User.HashedPassword).to.deep.equal({ "S": user.hashedPassword });
                 expect(User.getProperties()).to.deep.equal({ 
-                    ID: user.ID,
-                    Role: user.Role,
-                    HashedPassword: user.HashedPassword,
-                    FirstName: null,
-                    LastName: null,
-                    Email: null
+                    id: user.id,
+                    role: user.role,
+                    hashedPassword: user.hashedPassword,
+                    firstName: null,
+                    lastName: null,
+                    email: null
                 });
             });
 
             it('should create a complete database user object without error', function() {
                 let user = {
-                    ID: 'mock_tim',
-                    Role: Model.prototype.getRoles().admin,
-                    FirstName: 'Timothy',
-                    LastName: 'Mock',
-                    Email: 'timothy@mock.co',
-                    HashedPassword: 'hashaaabbbccc'
+                    id: 'mock_tim',
+                    role: Model.prototype.getRoles().admin,
+                    firstName: 'Timothy',
+                    lastName: 'Mock',
+                    email: 'timothy@mock.co',
+                    hashedPassword: 'hashaaabbbccc'
                 };
                 let User = new Model(user);
                 expect(User).to.have.property('ID');
-                expect(User.ID).to.deep.equal({ "S": user.ID });
-                expect(user).to.have.property('Role');
-                expect(User.Role).to.deep.equal({ "S": user.Role });
+                expect(User.ID).to.deep.equal({ "S": user.id });
+                expect(User).to.have.property('Role');
+                expect(User.Role).to.deep.equal({ "S": user.role });
                 expect(User).to.have.property('FirstName');
-                expect(User.FirstName).to.deep.equal({ "S": user.FirstName });
+                expect(User.FirstName).to.deep.equal({ "S": user.firstName });
                 expect(User).to.have.property('LastName');
-                expect(User.LastName).to.deep.equal({ "S": user.LastName });
+                expect(User.LastName).to.deep.equal({ "S": user.lastName });
                 expect(User).to.have.property('Email');
-                expect(User.Email).to.deep.equal({ "S": user.Email });
+                expect(User.Email).to.deep.equal({ "S": user.email });
                 expect(User).to.have.property('HashedPassword');
-                expect(User.HashedPassword).to.deep.equal({ "S": user.HashedPassword });
+                expect(User.HashedPassword).to.deep.equal({ "S": user.hashedPassword });
                 expect(User.getProperties()).to.deep.equal(user);
             });
 
-            it('should throw an error when \'ID\' is missing', function() {
+            it('should throw an error when \'id\' is missing', function() {
                 let user = {
-                    Role: Model.prototype.getRoles().admin,
-                    HashedPassword: 'hashaaabbbccc'
+                    role: Model.prototype.getRoles().admin,
+                    hashedPassword: 'hashaaabbbccc'
                 };
-                expect(function() { new Model(user) }).to.throw('Invalid user, missing "ID" property');
+                expect(function() { new Model(user) }).to.throw('Invalid user, missing "id" property');
             });
 
-            it('should throw an error when \'Role\' is missing', function() {
+            it('should throw an error when \'role\' is missing', function() {
                 let user = {
-                    ID: 'mock_tim',
-                    HashedPassword: 'hashaaabbbccc'
+                    id: 'mock_tim',
+                    hashedPassword: 'hashaaabbbccc'
                 };
-                expect(function() { new Model(user) }).to.throw('Invalid user, missing "Role" property');
+                expect(function() { new Model(user) }).to.throw('Invalid user, missing "role" property');
             });
 
-            it('should throw an error when \'Role\' is not a valid value', function() {
+            it('should throw an error when \'role\' is not a valid value', function() {
                 let user = {
-                    ID: 'mock_tim',
-                    Role: 'DoAnything',
-                    HashedPassword: 'hashaaabbbccc'
+                    id: 'mock_tim',
+                    role: 'DoAnything',
+                    hashedPassword: 'hashaaabbbccc'
                 };
                 expect(function() { new Model(user) }).to.throw('Invalid user, "role" propery is not an allowed value');
             });
 
             it('should throw an error when \'HashedPassword\' is missing', function() {
                 let user = {
-                    ID: 'mock_tim',
-                    Role: Model.prototype.getRoles().admin
+                    id: 'mock_tim',
+                    role: Model.prototype.getRoles().admin
                 };
-                expect(function() { new Model(user) }).to.throw('Invalid user, missing "HashedPassword property');
+                expect(function() { new Model(user) }).to.throw('Invalid user, missing "hashedPassword property');
             });
         });
     });
@@ -186,13 +186,13 @@ describe('auth', function() {
                 send,
                 status: () => ({ send })
             };
-            auth.require(mockUser.Role)(req, res, () => {
+            auth.require(mockUser.role)(req, res, () => {
                 expect(req.user).to.deep.equal({
-                    ID: mockUser.ID,
-                    Role: mockUser.Role,
-                    FirstName: mockUser.FirstName,
-                    LastName: mockUser.LastName,
-                    Email: mockUser.Email
+                    id: mockUser.id,
+                    role: mockUser.role,
+                    firstName: mockUser.firstName,
+                    lastName: mockUser.lastName,
+                    email: mockUser.email
                 });
                 done();
             });
@@ -213,7 +213,7 @@ describe('auth', function() {
                     return { send };
                 }
             };
-            auth.require(mockUser.Role)(req, res, errFunc(done, 'request should have been rejected'));
+            auth.require(mockUser.role)(req, res, errFunc(done, 'request should have been rejected'));
         });
 
         it('should reject invalid token', function(done) {
@@ -236,18 +236,18 @@ describe('auth', function() {
                     expect(value).to.contain('error="invalid_token"');
                 }
             };
-            auth.require(mockUser.Role)(req, res, errFunc(done, 'request should have been rejected'));
+            auth.require(mockUser.role)(req, res, errFunc(done, 'request should have been rejected'));
         });
 
         it('should reject token with incorrect user role', function(done) {
             authUtil.saveUser({
-                ID: 'not_tim',
-                Role: 'user', // not equal to mockUser.Role
-                HashedPassword: mockUser.HashedPassword
+                id: 'not_tim',
+                role: 'user', // not equal to mockUser.role
+                hashedPassword: mockUser.hashedPassword
             }).then(() => {
                 authUtil.login({
                     id: 'not_tim',
-                    password: mockUser.PlainPassword
+                    password: mockUser.plainPassword
                 }).then(r => {
                     let token = r.access_token;
 
@@ -271,7 +271,7 @@ describe('auth', function() {
 
                         }
                     };
-                    auth.require(mockUser.Role)(req, res, errFunc(done, 'request should have been rejected'));
+                    auth.require(mockUser.role)(req, res, errFunc(done, 'request should have been rejected'));
                 });
             });
         });  
@@ -279,7 +279,7 @@ describe('auth', function() {
         it('should reject expired token', function(done) {
             this.timeout(10000);
             authUtil.login({
-                id: mockUser.ID,
+                id: mockUser.id,
                 password: mockUser.PlainPassword
             }).then(async r => {
                 const token = r.access_token;
@@ -305,7 +305,7 @@ describe('auth', function() {
                 };
                 const delay = () => new Promise(resolve => setTimeout(resolve, 3000));
                 await delay(); // delay to let token expire
-                auth.require(mockUser.Role)(req, res, errFunc(done, 'request should have been rejected'));
+                auth.require(mockUser.role)(req, res, errFunc(done, 'request should have been rejected'));
             });
         });
     });

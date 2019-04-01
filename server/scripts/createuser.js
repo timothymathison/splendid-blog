@@ -11,9 +11,9 @@ let role = args[3];
 let pass = args[4];
 
 let user = {
-    ID: id,
-    Role: role,
-    HashedPassword: auth.hash(pass)
+    id: id,
+    role: role,
+    hashedPassword: auth.hash(pass)
 };
 
 db.user.saveNew(user)

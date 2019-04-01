@@ -45,19 +45,19 @@ const sendMissingScope = res => {
 const login = async req => {
     try {
         let u = await db.user.get(req.body.id); // retrieve user from database
-        let hashedPass = u.HashedPassword;
+        let hashedPass = u.hashedPassword;
         let match = await bcrypt.compare(req.body.password, hashedPass);
         if(match === true) {
             let user = {
-                ID: u.ID,
-                Role: u.Role,
-                Email: u.Email,
-                FirstName: u.FirstName,
-                LastName: u.LastName
+                id: u.id,
+                role: u.role,
+                email: u.email,
+                firstName: u.firstName,
+                lastName: u.lastName
             }; // user info excluding hashed password
             let token = generateToken(user, secret);
             return res => {
-                console.log(`User ${u.ID} logged in`);
+                console.log(`User ${u.id} logged in`);
                 res.send({
                     message: 'Logged in',
                     access_token: token,
@@ -94,11 +94,11 @@ const requireLogin = (role) => (req, res, next) => {
         let auth = verifyToken(token, secret);
         if(!auth) {
             sendInvalid(res);
-        } else if(auth.user.Role != role) { //compare roles
+        } else if(auth.user.role != role) { //compare roles
             sendMissingScope(res);
         } else {
             //user has access!
-            console.log(`User ${auth.user.ID} was authorization`);
+            console.log(`User ${auth.user.id} was authorization`);
             req.user = auth.user; // place user in request body
             next();
         }
