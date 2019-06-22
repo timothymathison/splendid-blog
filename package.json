@@ -43,7 +43,7 @@
     "concurrently": "^3.6.1",
     "dotenv-json": "^1.0.0",
     "mocha": "^5.2.0",
-    "newman": "^4.4.0",
+    "newman": "^4.5.1",
     "nodemon": "^1.18.5"
   },
   "repository": {
