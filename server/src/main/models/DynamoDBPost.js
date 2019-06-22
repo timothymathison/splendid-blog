@@ -5,7 +5,7 @@ const categories = [
     { id: 'inspiration', label: 'Inspiration' }
 ];
 
-function DynamoDBPost(p) {
+function DynamoDBPost(p) { //TODO: unit test
     if(p.id) {
         this.ID = { S: p.id };
     } else {
@@ -57,12 +57,26 @@ function DynamoDBPost(p) {
     }
 
     if(p.mediaPaths) {
-        this.mediaPaths = { S: p.mediaPaths };
+        this.MediaPaths = { S: JSON.stringify(p.mediaPaths) };
     } else {
         throw 'Invalid post, missing "mediaPaths" property';
     }
 }
 
 DynamoDBPost.prototype.getCategories = () => categories;
+DynamoDBPost.prototype.getProperties = function(other) {
+    const post =  other ? other : this;
+    return {
+        id: post.ID.S,
+        title: post.Title.S,
+        author: post.Author.S,
+        createdTime: post.CreatedTime.S,
+        category: post.Category.S,
+        published: post.Published.B,
+        thumnailPath: post.ThumnailPath.S,
+        bodyPath: post.BodyPath.S,
+        mediaPaths: JSON.parse(post.MediaPaths.S)
+    };
+}
 
 module.exports = DynamoDBPost;

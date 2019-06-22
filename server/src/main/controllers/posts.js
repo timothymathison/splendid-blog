@@ -25,10 +25,18 @@ const createPost = async req => {
     const { id, title, category, htmlBody, thumnailPath } = req.body;
     const mediaPaths = req.body.mediaPaths || []; // empty if not provided
     const createdTime = new Date().toISOString();
-    const author = ''; // 
+    const author = req.user.id;
     const published = false; // don't publish until all saves are successfull
     const bodyPath = `posts/${id}.html`;
 
+    if(!htmlBody) {
+        console.error('Missing post html body');
+        return res => {
+            sendError.badRequest(res);
+        }
+    }
+
+    
     //check that all media files exist
     const validMedia = (Array.isArray(mediaPaths))
         && (await Promise.all(mediaPaths.push(thumnailPath).map( async path => fileStorage.fileExists(path))))
@@ -44,13 +52,14 @@ const createPost = async req => {
     try {
         db.post.create({
             id,
+            author,
             createdTime,
             title,
             category,
             published,
             bodyPath,
             thumnailPath,
-            mediaPaths: JSON.stringify(mediaPaths)
+            mediaPaths
         });
     } catch(error) {
         console.error(error);

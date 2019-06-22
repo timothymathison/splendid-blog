@@ -7,12 +7,12 @@ const postsTable = process.env.AWS_POST_TABLE || 'SplendidBlogPosts'; //define f
 const usersTable = process.env.AWS_USER_TABLE || 'SplendidBlogUsers';
 
 //save a new post database entry and return success
-const createPost = (post) => {
+const createPost = post => {
     return new Promise((resolve, reject) => {
         try {
             const Post = new DynamoDBPost(post);
             const dbParams = {
-                Item: post,
+                Item: Post,
                 TableName: postsTable,
                 ConditionExpression: 'attribute_not_exists(ID)'
             };
@@ -30,8 +30,29 @@ const createPost = (post) => {
     });
 };
 
-const getPost = (id) => {
-    //return single post entry from database
+const updatePost = post => {
+    return new Promise((resolve, reject) => {
+        //TODO: get post and update
+    }
+}
+
+//return single post entry from database
+const getPost = id => {
+    return new Promise((resolve, reject) => {
+        const params = {
+            Key: {
+                "ID": {"S": id}
+            },
+            TableName: postsTable
+        };
+        dynamodb.getItem(params, (err, res) => {
+            if(err) {
+                reject(err); // TODO: return custom error
+            } else {
+                resolve(DynamoDBPost.prototype.getProperties(res.Item));
+            }
+        });
+    });
 };
 
 const getMultiplePosts = (ids) => {
