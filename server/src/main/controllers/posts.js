@@ -1,8 +1,12 @@
 
 const shortid = require('shortid');
 
-const db = require(`../../${process.env.DATABASE || 'main/services/database'}`);
-const fileStorage = require(`../../${process.env.FILE_STORAGE || 'main/services/filestorage'}`);
+const db = process.env.IN_MEMORY_DB
+    ? require('../../test/services/database')
+    : require('../services/database');
+const fileStorage = process.env.IN_MEMORY_FS
+    ? require('../../test/services/filestorage')
+    : require('../services/filestorage');
 const sendError = require('../utils/errors');
 
 // generate post id and media storage path

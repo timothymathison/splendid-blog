@@ -3,12 +3,13 @@ if(process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
     const envLoader = require('dotenv-json');
     envLoader({ path: "server/config/.env.development.json"});
 
-    process.env['DATABASE'] = 'test/services/database'; // use mock database
-    console.log(`Setting database to ${process.env.DATABASE}`);
+    process.env['IN_MEMORY_DB'] = true;
+    console.log('Using in memory database');
 }
 
-const dbService = process.env['DATABASE'];
-const db = require(`../../${dbService}`);
+const db = process.env.IN_MEMORY_DB
+    ? require('../../test/services/database')
+    : require('../services/database');
 const auth = require('../../main/controllers/auth');
 
 const testPass = Math.random().toString(36).substring(2); // generate random test password

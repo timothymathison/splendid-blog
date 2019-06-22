@@ -6,8 +6,8 @@ console.log('Test API Routes, running Postman collection...');
 
 // setup test environment
 process.env['NODE_ENV'] = 'test';
-process.env['DATABASE'] = 'test/services/database'; // use mock database
-console.log(`Setting database to ${process.env.DATABASE}`);
+process.env['IN_MEMORY_DB'] = true;
+console.log('Using in memory database');
 
 const server = require('../main/server');
 const port = process.env.PORT || 4000;

@@ -1,4 +1,6 @@
-const fileStorage = require(`../../${process.env.FILE_STORAGE || 'main/services/filestorage'}`);
+const fileStorage = process.env.IN_MEMORY_FS
+    ? require('../../test/services/filestorage')
+    : require('../services/filestorage');
 const sendError = require('../utils/errors');
 
 // at least one of letters, numbers or hyphen/underscore followed by image extension

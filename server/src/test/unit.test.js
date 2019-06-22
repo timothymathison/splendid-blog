@@ -108,8 +108,8 @@ describe('auth', function() {
     let auth, mockUser, tokenExpire;
     before(function() {
         envLoader({ path: "server/config/.env.development.json"});
-        process.env['DATABASE'] = 'test/services/database'; // use mock database
-        console.log(`Setting database to ${process.env.DATABASE}`);
+        process.env['IN_MEMORY_DB'] = true;
+        console.log('Using in memory database');
 
         tokenExpire = 3;
         process.env['TOKEN_EXPIRE_TIME'] = tokenExpire; // set token to expire in 3 seconds
