@@ -24,7 +24,7 @@ const initPost = async () => {
 const createPost = async req => {
     const { id, title, category, htmlBody, thumnailPath } = req.body;
     const mediaPaths = req.body.mediaPaths || []; // empty if not provided
-    const createdTime = (new Date()).getValue();
+    const createdTime = Date.now();
     const author = req.user.id;
     const published = false; // don't publish until all saves are successfull
     const bodyPath = `posts/${id}.html`;
@@ -39,7 +39,7 @@ const createPost = async req => {
     
     //check that all media files exist
     const validMedia = (Array.isArray(mediaPaths))
-        && (await Promise.all(mediaPaths.push(thumnailPath).map( async path => fileStorage.fileExists(path))))
+        && (await Promise.all(mediaPaths.concat([thumnailPath]).map( async path => fileStorage.exists(path))))
             .every(exists => exists);
     if(!validMedia) {
         console.error('Invalid or missing media files');
@@ -71,7 +71,7 @@ const createPost = async req => {
 
     //save the post body to s3
     try {
-        await fileStorage.saveFile(bodyPath, htmlBody);
+        await fileStorage.save(bodyPath, htmlBody);
     } catch(error) {
         console.error(error);
         // TODO: delete post from db

@@ -1,4 +1,5 @@
 
+const DynamoDBPost = require('../../main/models/dynamodbpost');
 const DynamoDBUser = require('../../main/models/dynamodbuser');
 
 let users = {};
