@@ -6,18 +6,20 @@ const DynamoDBPost = require('../models/DynamoDBPost');
 const postsTable = process.env.AWS_POST_TABLE || 'SplendidBlogPosts'; //define from env otherwise default
 const usersTable = process.env.AWS_USER_TABLE || 'SplendidBlogUsers';
 
-//save a new post database entry and return success
-const createPost = post => {
+// save post to database and return if successfull
+const savePost = canExist => post => {
     return new Promise((resolve, reject) => {
         try {
             const Post = new DynamoDBPost(post);
             const dbParams = {
                 Item: Post,
                 TableName: postsTable,
-                ConditionExpression: 'attribute_not_exists(ID)'
             };
-            // save new post in database
-            dynamodb.putItem(dbParams, (err, data) => {
+            if (!canExist) {
+                dbParams.ConditionExpression = 'attribute_not_exists(ID)'
+            }
+            // save in database
+            dynamodb.putItem(dbParams, (err, _) => {
                 if(err) {
                     reject(err);
                 } else {
@@ -28,12 +30,6 @@ const createPost = post => {
             reject(e);
         }
     });
-};
-
-const updatePost = post => {
-    return new Promise((resolve, reject) => {
-        //TODO: get post and update
-    })
 }
 
 //return single post entry from database
@@ -104,7 +100,8 @@ const getUser = (id) => {
 
 module.exports = {
     post: {
-        create: createPost,
+        create: savePost(false),
+        save: savePost(true),
         get: getPost,
         getMultiple: getMultiplePosts
     },

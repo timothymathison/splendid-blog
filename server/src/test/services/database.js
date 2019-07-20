@@ -2,17 +2,34 @@
 const DynamoDBUser = require('../../main/models/dynamodbuser');
 
 let users = {};
+let posts = {};
 
-const createPost = (post) => {
-    // TODO: save return sucess if the post is valid
+const savePost = canExist => post => {
+    return new Promise((resolve, reject) => {
+        try {
+            const Post = new DynamoDBPost(post);
+            if (!canExist && posts[Post.ID.S]) {
+                reject('Post already exists');
+            } else {
+                posts[Post.ID.S] = Post;
+                resolve(Post);
+            }
+        } catch(err) {
+            reject(err);
+        }
+    });
 };
 
-const getPost = (id) => {
-    // TODO: return single post entry
+const getPost = id => {
+    return new Promise((resolve, _) => {
+        resolve(posts[id]);
+    });
 };
 
-const getMultiplePosts = (ids) => {
-    // TODO: return list of post entries
+const getMultiplePosts = ids => {
+    return new Promise((resolve, _) => {
+        resolve(ids.map(id => posts[id]).filter(p => p));
+    });
 };
 
 const saveNewUser = (user) => {
@@ -42,7 +59,8 @@ const getUser = (id) => {
 
 module.exports = {
     post: {
-        create: createPost,
+        create: savePost(false),
+        save: savePost(true),
         get: getPost,
         getMultiple: getMultiplePosts
     },

@@ -49,18 +49,19 @@ const createPost = async req => {
     }
 
     // create new post entry in database
+    const post = {
+        id,
+        author,
+        createdTime,
+        title,
+        category,
+        published,
+        bodyPath,
+        thumnailPath,
+        mediaPaths
+    };
     try {
-        db.post.create({
-            id,
-            author,
-            createdTime,
-            title,
-            category,
-            published,
-            bodyPath,
-            thumnailPath,
-            mediaPaths
-        });
+        await db.post.create(post);
     } catch(error) {
         console.error(error);
         return res => {
@@ -70,9 +71,10 @@ const createPost = async req => {
 
     //save the post body to s3
     try {
-        fileStorage.saveFile(bodyPath, htmlBody);
+        await fileStorage.saveFile(bodyPath, htmlBody);
     } catch(error) {
         console.error(error);
+        // TODO: delete post from db
         return res => {
             sendError.serverError(res);
         };
@@ -80,7 +82,16 @@ const createPost = async req => {
 
     //mark post as published if specified in request
     if(req.body.published) {
-        // TODO: update database
+        post.published = false
+        try {
+            await db.post.save(post)
+        } catch(error) {
+            console.error(error);
+            // TODO: delete post from db
+            return res => {
+                sendError.serverError(res);
+            };
+        }
     }
 
     // success, new post created
