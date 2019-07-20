@@ -32,6 +32,13 @@ const saveFile = (path, data) => { // TODO: test with raw image files
     });
 };
 
+const deleteFile = path => {
+    return new Promise((resolve, _) => {
+        files[path] = null;
+        resolve(true);
+    });
+}
+
 // add default media files for testing
 saveFile(`media/${testPostId}/mountain.jpg`, 'code');
 saveFile(`media/${testPostId}/flower.jpg`, 'code');
@@ -39,6 +46,7 @@ saveFile(`media/${testPostId}/flower.jpg`, 'code');
 module.exports = {
     get: getFile,
     save: saveFile,
+    delete: deleteFile,
     exists: fileExists,
     testValues: {
         postId: testPostId,
