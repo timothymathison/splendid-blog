@@ -4,13 +4,57 @@ const envLoader = require('dotenv-json');
 const { notFoundMsg, badRequestMsg, serverErrorMsg } = require('../main/utils/errors');
 
 describe('models', function() {
+    describe('DynamoDBPost', function() {
+        const Model = require('../main/models/DynamoDBPost');
+
+        describe('#getCategories()', function() {
+            it('should return the correct categories', function() {
+                expect(Model.prototype.getCategories()).to.deep.equal([
+                    { id: 'life', label: 'Life' },
+                    { id: 'food', label: 'Food' },
+                    { id: 'inspiration', label: 'Inspiration' }
+                ]);
+            });
+        });
+
+        describe('#DynamoDBPost()', function() {
+            let post;
+            beforeEach(function() {
+                post = {
+                    id: 'id',
+                    title: 'A Post About Life',
+                    author: 'april',
+                    createdTime: 123456789,
+                    category: Model.prototype.getCategories()[0].id,
+                    published: true,
+                    thumnailPath: 'media/id/image.jpg',
+                    bodyPath: 'posts/id.html',
+                    mediaPaths: ['media/id/image.jpg'],
+                };
+            });
+
+            it('should create a database post object without error', function() {
+                const Post = new Model(post);
+                expect(Post).to.have.property('ID');
+                expect(Post.ID).to.deep.equal({ "S": post.id });
+                expect(Post).to.have.property('Author');
+                expect(Post.Author).to.deep.equal({ "S": post.author });
+                expect(Post).to.have.property('Title');
+                expect(Post.Title).to.deep.equal({ "S": post.title });
+                //TODO: finish assertions
+            });
+        });
+    });
+
     describe('DynamoDBUser', function() {
-        let Model = require('../main/models/dynamodbuser');
+        const Model = require('../main/models/dynamodbuser');
+
         describe('#getRoles()', function() {
             it('should return the correct roles', function() {
                 expect(Model.prototype.getRoles()).to.deep.equal({ user: 'user', admin: 'admin' })
             });
         });
+
         describe('#DynamoDBUser()', function() {
             it('should create a minimal database user object without error', function() {
                 let user = {
@@ -337,6 +381,8 @@ describe('controllers', function() {
             let body, testValues
             before(function() {
                 testValues = require('./services/filestorage').testValues;
+            });
+            beforeEach(function() {
                 body = {
                     id: testValues.postId,
                     title: 'A Post About Life',
@@ -354,6 +400,33 @@ describe('controllers', function() {
                     expect(code).to.equal(204);
                     return { end: () => {}}
                 }
+                (await postsController.createPost({ user, body }))({ status: mockStatus });
+            });
+
+            it('should fail when htmlBody is missing', async function() {
+                const mockStatus = code => {
+                    expect(code).to.equal(400);
+                    return { send: () => {}}
+                };
+                body.htmlBody = null;
+                (await postsController.createPost({ user, body }))({ status: mockStatus });
+            });
+
+            it('should fail when one of the media files is missing', async function() {
+                const mockStatus = code => {
+                    expect(code).to.equal(400);
+                    return { send: () => {}}
+                };
+                body.mediaPaths = ['media/other.jpg'];
+                (await postsController.createPost({ user, body }))({ status: mockStatus });
+            });
+
+            it('should fail when one the thumnail file is missing', async function() {
+                const mockStatus = code => {
+                    expect(code).to.equal(400);
+                    return { send: () => {}}
+                };
+                body.thumnailPath = 'media/other.jpg';
                 (await postsController.createPost({ user, body }))({ status: mockStatus });
             });
         });

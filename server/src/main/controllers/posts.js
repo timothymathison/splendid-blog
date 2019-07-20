@@ -82,7 +82,7 @@ const createPost = async req => {
 
     //mark post as published if specified in request
     if(req.body.published) {
-        post.published = false
+        post.published = true
         try {
             await db.post.save(post)
         } catch(error) {
