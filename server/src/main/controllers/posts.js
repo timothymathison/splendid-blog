@@ -24,7 +24,7 @@ const initPost = async () => {
 const createPost = async req => {
     const { id, title, category, htmlBody, thumnailPath } = req.body;
     const mediaPaths = req.body.mediaPaths || []; // empty if not provided
-    const createdTime = new Date().toISOString();
+    const createdTime = (new Date()).getValue();
     const author = req.user.id;
     const published = false; // don't publish until all saves are successfull
     const bodyPath = `posts/${id}.html`;

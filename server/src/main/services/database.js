@@ -33,7 +33,7 @@ const createPost = post => {
 const updatePost = post => {
     return new Promise((resolve, reject) => {
         //TODO: get post and update
-    }
+    })
 }
 
 //return single post entry from database

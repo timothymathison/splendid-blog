@@ -25,7 +25,7 @@ function DynamoDBPost(p) { //TODO: unit test
     }
 
     if(p.createdTime) {
-        this.CreatedTime = { S: p.createdTime };
+        this.CreatedTime = { N: p.createdTime };
     } else {
         throw 'Invalid post, missing "createdTime" property'
     }
@@ -70,7 +70,7 @@ DynamoDBPost.prototype.getProperties = function(other) {
         id: post.ID.S,
         title: post.Title.S,
         author: post.Author.S,
-        createdTime: post.CreatedTime.S,
+        createdTime: post.CreatedTime.N,
         category: post.Category.S,
         published: post.Published.B,
         thumnailPath: post.ThumnailPath.S,
