@@ -41,8 +41,27 @@ describe('models', function() {
                 expect(Post.Author).to.deep.equal({ "S": post.author });
                 expect(Post).to.have.property('Title');
                 expect(Post.Title).to.deep.equal({ "S": post.title });
-                //TODO: finish assertions
+                expect(Post).to.have.property('CreatedTime');
+                expect(Post.CreatedTime).to.deep.equal({ "N": post.createdTime });
+                expect(Post).to.have.property('Category');
+                expect(Post.Category).to.deep.equal({ "S": post.category });
+                expect(Post).to.have.property('Published');
+                expect(Post.Published).to.deep.equal({ "B": post.published });
+                expect(Post).to.have.property('ThumnailPath');
+                expect(Post.ThumnailPath).to.deep.equal({ "S": post.thumnailPath });
+                expect(Post).to.have.property('BodyPath');
+                expect(Post.BodyPath).to.deep.equal({ "S": post.bodyPath });
+                expect(Post).to.have.property('MediaPaths');
+                expect(Post.MediaPaths).to.deep.equal({ "S": JSON.stringify(post.mediaPaths) });
             });
+
+            it('should throw an error when \'id\' is missing', function(){});
+
+            it('should throw an error when \'author\' is missing', function(){});
+
+            it('should throw an error when \'title\' is missing', function(){});
+
+            it('should throw an error when \'createdTime\' is missing', function(){});
         });
     });
 
