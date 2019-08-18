@@ -13,8 +13,12 @@ router.get('/init', authController.require(roles.admin), async (_, res) => {
     (await controller.initPost())(res);
 });
 
-router.post('/create', authController.require(roles.admin), (req, res) => {
-    res.send(req.body);
+router.post('/create', authController.require(roles.admin), async (req, res) => {
+    (await controller.createPost(req))(res);
+});
+
+router.get('/:postId', authController.require(roles.admin), async (req, res) => {
+    (await controller.getPost(req))(res);
 });
 
 module.exports = router;

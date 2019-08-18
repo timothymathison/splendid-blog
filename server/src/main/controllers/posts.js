@@ -36,7 +36,6 @@ const createPost = async req => {
         }
     }
 
-    
     //check that all media files exist
     const validMedia = (Array.isArray(mediaPaths))
         && (await Promise.all(mediaPaths.concat([thumnailPath]).map( async path => fileStorage.exists(path))))
@@ -107,7 +106,19 @@ const editPost = async req => {
 
 // get a complete post
 const getPost = async req => {
-
+    const { postId } = req.params;
+    try {
+        const post = await db.post.get(postId);
+        return res => {
+            console.log(`Post retrieved, id: ${postId}`);
+            res.send(post);
+        }
+    } catch (error) {
+        return res => {
+            console.error(error);
+            sendError.notFound(res, `Could not retrieve post id: ${postId}`);
+        }
+    }
 };
 
 // get a list containing the metadata for multiple posts
@@ -117,5 +128,6 @@ const getPreviews = async req => {
 
 module.exports = {
     initPost,
-    createPost
+    createPost,
+    getPost
 };

@@ -24,7 +24,7 @@ const getMedia = async req => {
         try {
             const media = await fileStorage.get(fullPath);
             return res => {
-                console.log(`media retrieved: ${fullPath}`);
+                console.log(`Media retrieved: ${fullPath}`);
                 res.setHeader('Content-Type', `image/${matchMedia[1]}`);
                 res.send(media);
             };
@@ -64,8 +64,8 @@ const postPutCommon = overwrite => async req => {
             try {
                 await fileStorage.save(fullPath, req.body);
                 return res => {
-                console.log(`media uploaded: ${fullPath}`);
-                res.status(204).end();
+                    console.log(`media uploaded: ${fullPath}`);
+                    res.status(204).end();
                 };
             } catch(err) {
                 return res => {
