@@ -55,13 +55,50 @@ describe('models', function() {
                 expect(Post.MediaPaths).to.deep.equal({ "S": JSON.stringify(post.mediaPaths) });
             });
 
-            it('should throw an error when \'id\' is missing', function(){});
+            it('should throw an error when \'id\' is missing', function() {
+                post.id = undefined;
+                expect(() => { new Model(post) }).to.throw('Invalid post, missing "id" property');
+            });
 
-            it('should throw an error when \'author\' is missing', function(){});
+            it('should throw an error when \'author\' is missing', function() {
+                post.author = undefined;
+                expect(() => { new Model(post) }).to.throw('Invalid post, missing "author" property');
+            });
 
-            it('should throw an error when \'title\' is missing', function(){});
+            it('should throw an error when \'title\' is missing', function() {
+                post.title = undefined;
+                expect(() => { new Model(post) }).to.throw('Invalid post, missing "title" property');
+            });
 
-            it('should throw an error when \'createdTime\' is missing', function(){});
+            it('should throw an error when \'createdTime\' is missing', function() {
+                post.createdTime = undefined;
+                expect(() => { new Model(post) }).to.throw('Invalid post, missing "createdTime" property');
+            });
+
+            it('should throw an error when \'category\' is missing', function() {
+                post.category = undefined;
+                expect(() => { new Model(post) }).to.throw('Invalid post, missing "category" property');
+            });
+
+            it('should throw an error when category is invalid', function() {
+                post.category = 'something else';
+                expect(() => { new Model(post) }).to.throw('Invalid post, category is in-valid');
+            });
+
+            it('should throw error when thumnailPath is missing', function() {
+                post.thumnailPath = undefined;
+                expect(() => { new Model(post) }).to.throw('Invalid post, missing "thumnailPath" property');
+            });
+
+            it('should throw error when bodyPath is missing', function() {
+                post.bodyPath = undefined;
+                expect(() => { new Model(post) }).to.throw('Invalid post, missing "bodyPath" property');
+            });
+
+            it('should throw error when mediaPaths is missing', function() {
+                post.mediaPaths = undefined;
+                expect(() => { new Model(post) }).to.throw('Invalid post, missing "mediaPaths" property');
+            });
         });
     });
 

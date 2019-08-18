@@ -40,9 +40,7 @@ function DynamoDBPost(p) { //TODO: unit test
         throw 'Invalid post, missing "category" property';
     }
 
-    if(p.published) {
-        this.Published = { B: p.published };
-    }
+    this.Published = { B: p.published };
 
     if(p.thumnailPath) {
         this.ThumnailPath = { S: p.thumnailPath };
