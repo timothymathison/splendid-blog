@@ -25,41 +25,67 @@ const createPost = async req => {
         id,
         title,
         category,
+        published,
         htmlBody,
-        thumnailPath
+        thumnail,
+        media
     } = req.body;
-    const mediaPaths = req.body.mediaPaths || []; // empty if not provided
-    const createdTime = Date.now();
-    const author = req.user.id;
-    const published = false; // don't publish until all saves are successfull
-    const bodyPath = `posts/${id}.html`;
 
-    if (!htmlBody) {
-        console.error('Missing post html body');
+    //basic validation
+    if (!id) {
+        const msg = 'Missing post id'
+        console.error(msg)
         return res => {
-            sendError.badRequest(res);
+            sendError.badRequest(res, msg);
+        }
+    }
+    if (!htmlBody) {
+        const msg = 'Missing post html body';
+        console.error(msg);
+        return res => {
+            sendError.badRequest(res, msg);
         }
     }
 
+    const mediaPaths = (media || []).filter(m => m).map(name => `media/${id}/${name}`);
+    const thumnailPath = thumnail && `media/${id}/${thumnail}`;
+    const bodyPath = `posts/${id}.html`;
+    const createdTime = Date.now();
+    const author = req.user.id;
+
     //check that all media files exist
     try {
-        const validMedia = (Array.isArray(mediaPaths)) &&
+        const validMedia = (
+                thumnailPath &&
+                Array.isArray(mediaPaths)) &&
             (await Promise.all(
-                mediaPaths.concat([thumnailPath])
+                [thumnailPath, ...mediaPaths]
                 .map(path => fileStorage.exists(path))
             ))
             .every(exists => exists);
         if (!validMedia) {
-            console.error('Invalid or missing media files');
+            const msg = 'Invalid or missing media files';
+            console.error(msg);
             return res => {
-                sendError.badRequest(res);
+                sendError.badRequest(res, msg);
             };
         }
     } catch (err) {
         return res => {
-            console.error(err);
+            console.error('Failed media file check', err);
             sendError.serverError(res);
         }
+    }
+
+    //save the post body to s3
+    try {
+        await fileStorage.save(bodyPath, htmlBody);
+    } catch (error) {
+        console.error('Failed to save post body to S3', error);
+        // TODO: delete post from db
+        return res => {
+            sendError.serverError(res);
+        };
     }
 
     // create new post entry in database
@@ -77,35 +103,10 @@ const createPost = async req => {
     try {
         await db.post.create(post);
     } catch (error) {
-        console.error(error);
+        console.error('Failed to create database post entry', error);
         return res => {
             sendError.badRequest(res);
         };
-    }
-
-    //save the post body to s3
-    try {
-        await fileStorage.save(bodyPath, htmlBody);
-    } catch (error) {
-        console.error(error);
-        // TODO: delete post from db
-        return res => {
-            sendError.serverError(res);
-        };
-    }
-
-    //mark post as published if specified in request
-    if (req.body.published) {
-        post.published = true
-        try {
-            await db.post.save(post)
-        } catch (error) {
-            console.error(error);
-            // TODO: delete post from db
-            return res => {
-                sendError.serverError(res);
-            };
-        }
     }
 
     // success, new post created
