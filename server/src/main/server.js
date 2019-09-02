@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const server = express();
 
-const api = require('./routes/api')
+const api = require('./routes/api');
 
 server.use('/api', api);
 
@@ -10,7 +10,7 @@ server.use('/api', api);
 server.use(express.static(path.join(__dirname, 'client/build')));
 
 // Handle React routing, return all requests to React app
-server.get('*', function(_, res) {
+server.get('*', function (_, res) {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 

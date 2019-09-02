@@ -32,13 +32,16 @@ router.use('/categories', categoryRouter); //send category related requests to c
 
 router.use('/auth', authRouter); //send auth related requests to auth route
 
-router.get('*', (req, res) => {
+router.get('*', (_, res) => {
     errorUtil.notFound(res); //send 404 for get routes that don't exist
 });
 
-router.post('*', (req, res) => {
+router.post('*', (_, res) => {
     errorUtil.notFound(res); //send 404 for post routes that don't exist
 });
 
+router.put('*', (_, res) => {
+    errorUtil.notFound(res); //send 404 for put routes that don't exist
+});
 
 module.exports = router;
