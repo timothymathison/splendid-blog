@@ -36,6 +36,12 @@ _Client_ will be exposed on `localhost:3000`, _Server_ on `localhost:4000` and `
 $ npm test
 ```
 
+**Deploy to _lambda_(must be already created):**
+
+```shell
+$ npm run deploy
+```
+
 #### Server Commands
 
 **Start (will serve client from client build folder):**
@@ -102,7 +108,7 @@ $ npm run test:server
    ```shell
    $ npm run create:infrastructure
    ```
-5. Create the _lambda_ instance with the _Server_ and _Client_ (build directory) deployed:
+5. Create the _lambda_ instance with the _Server_ and _Client_ (`client/build` directory) deployed:
 
    ```
    $ npm run create:lambda-instance
