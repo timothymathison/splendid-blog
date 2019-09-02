@@ -1,12 +1,11 @@
-
 const shortid = require('shortid');
 
-const db = process.env.IN_MEMORY_DB
-    ? require('../../test/services/database')
-    : require('../services/database');
-const fileStorage = process.env.IN_MEMORY_FS
-    ? require('../../test/services/filestorage')
-    : require('../services/filestorage');
+const db = process.env.IN_MEMORY_DB ?
+    require('../../test/services/database') :
+    require('../services/database');
+const fileStorage = process.env.IN_MEMORY_FS ?
+    require('../../test/services/filestorage') :
+    require('../services/filestorage');
 const sendError = require('../utils/errors');
 
 // generate post id and media storage path
@@ -22,14 +21,20 @@ const initPost = async () => {
 
 // create and save a post
 const createPost = async req => {
-    const { id, title, category, htmlBody, thumnailPath } = req.body;
+    const {
+        id,
+        title,
+        category,
+        htmlBody,
+        thumnailPath
+    } = req.body;
     const mediaPaths = req.body.mediaPaths || []; // empty if not provided
     const createdTime = Date.now();
     const author = req.user.id;
     const published = false; // don't publish until all saves are successfull
     const bodyPath = `posts/${id}.html`;
 
-    if(!htmlBody) {
+    if (!htmlBody) {
         console.error('Missing post html body');
         return res => {
             sendError.badRequest(res);
@@ -37,14 +42,24 @@ const createPost = async req => {
     }
 
     //check that all media files exist
-    const validMedia = (Array.isArray(mediaPaths))
-        && (await Promise.all(mediaPaths.concat([thumnailPath]).map( async path => fileStorage.exists(path))))
+    try {
+        const validMedia = (Array.isArray(mediaPaths)) &&
+            (await Promise.all(
+                mediaPaths.concat([thumnailPath])
+                .map(path => fileStorage.exists(path))
+            ))
             .every(exists => exists);
-    if(!validMedia) {
-        console.error('Invalid or missing media files');
+        if (!validMedia) {
+            console.error('Invalid or missing media files');
+            return res => {
+                sendError.badRequest(res);
+            };
+        }
+    } catch (err) {
         return res => {
-            sendError.badRequest(res);
-        };
+            console.error(err);
+            sendError.serverError(res);
+        }
     }
 
     // create new post entry in database
@@ -61,7 +76,7 @@ const createPost = async req => {
     };
     try {
         await db.post.create(post);
-    } catch(error) {
+    } catch (error) {
         console.error(error);
         return res => {
             sendError.badRequest(res);
@@ -71,7 +86,7 @@ const createPost = async req => {
     //save the post body to s3
     try {
         await fileStorage.save(bodyPath, htmlBody);
-    } catch(error) {
+    } catch (error) {
         console.error(error);
         // TODO: delete post from db
         return res => {
@@ -80,11 +95,11 @@ const createPost = async req => {
     }
 
     //mark post as published if specified in request
-    if(req.body.published) {
+    if (req.body.published) {
         post.published = true
         try {
             await db.post.save(post)
-        } catch(error) {
+        } catch (error) {
             console.error(error);
             // TODO: delete post from db
             return res => {
@@ -94,7 +109,7 @@ const createPost = async req => {
     }
 
     // success, new post created
-    return res =>{
+    return res => {
         res.status(204).end();
     };
 };
@@ -106,7 +121,9 @@ const editPost = async req => {
 
 // get a complete post
 const getPost = async req => {
-    const { postId } = req.params;
+    const {
+        postId
+    } = req.params;
     try {
         const post = await db.post.get(postId);
         return res => {

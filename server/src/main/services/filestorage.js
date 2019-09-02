@@ -28,7 +28,7 @@ const fileExists = (path) => {
         s3.headObject(params, err => {
             if(err) {
                 if(err.code === 'NotFound') resolve(false);
-                else throw err;
+                else reject(err);
             } else resolve(true);
         })
     });
