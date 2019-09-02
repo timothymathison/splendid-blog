@@ -569,7 +569,23 @@ describe('controllers', function () {
                     });
             });
 
-            it('should fail when htmlBody is missing', async function () {
+            it('should fail when id property is missing', async function () {
+                const mockStatus = code => {
+                    expect(code).to.equal(400);
+                    return {
+                        send: () => {}
+                    }
+                };
+                body.id = null;
+                (await postsController.createPost({
+                    user,
+                    body
+                }))({
+                    status: mockStatus
+                });
+            });
+
+            it('should fail when htmlBody property is missing', async function () {
                 const mockStatus = code => {
                     expect(code).to.equal(400);
                     return {
@@ -593,6 +609,22 @@ describe('controllers', function () {
                     }
                 };
                 body.media = ['other.jpg'];
+                (await postsController.createPost({
+                    user,
+                    body
+                }))({
+                    status: mockStatus
+                });
+            });
+
+            it('should fail when thumnail property is missing', async function () {
+                const mockStatus = code => {
+                    expect(code).to.equal(400);
+                    return {
+                        send: () => {}
+                    }
+                };
+                body.thumnail = null;
                 (await postsController.createPost({
                     user,
                     body
