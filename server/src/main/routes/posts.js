@@ -9,6 +9,8 @@ const controller = require('../controllers/posts');
 
 router.use(bodyParser.json());
 
+// TODO: use separate path/router for un-authenticated routes
+
 router.get('/init', authController.require(roles.admin), async (_, res) => {
     (await controller.initPost())(res);
 });

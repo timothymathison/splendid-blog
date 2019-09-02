@@ -1,5 +1,7 @@
 const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
+const dynamodb = new AWS.DynamoDB({
+    apiVersion: '2012-08-10'
+});
 const DynamoDBUser = require('../models/DynamoDBUser');
 const DynamoDBPost = require('../models/DynamoDBPost');
 
@@ -20,13 +22,13 @@ const savePost = canExist => post => {
             }
             // save in database
             dynamodb.putItem(dbParams, (err, _) => {
-                if(err) {
+                if (err) {
                     reject(err);
                 } else {
                     resolve(Post);
                 }
             });
-        } catch(e) {
+        } catch (e) {
             reject(e);
         }
     });
@@ -37,14 +39,16 @@ const getPost = id => {
     return new Promise((resolve, reject) => {
         const params = {
             Key: {
-                "ID": {"S": id}
+                "ID": {
+                    "S": id
+                }
             },
             TableName: postsTable
         };
         dynamodb.getItem(params, (err, res) => {
-            if(err) {
+            if (err) {
                 reject(err); // TODO: return custom error
-            } else {
+            } else { // TODO: add null check
                 resolve(DynamoDBPost.prototype.getProperties(res.Item));
             }
         });
@@ -66,13 +70,13 @@ const saveNewUser = (user) => {
             };
             // save new user in database
             dynamodb.putItem(dbParams, (err, data) => {
-                if(err) {
+                if (err) {
                     reject(err);
                 } else {
                     resolve(user);
                 }
             });
-        } catch(e) {
+        } catch (e) {
             reject(e);
         }
     });
@@ -81,15 +85,17 @@ const saveNewUser = (user) => {
 
 const getUser = (id) => {
     // return User from database, who's ID matches that given
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         let params = {
             Key: {
-                "ID": {"S": id}
+                "ID": {
+                    "S": id
+                }
             },
             TableName: usersTable
         };
         dynamodb.getItem(params, (err, res) => {
-            if(err) {
+            if (err) {
                 reject(err); // TODO: return custom error
             } else {
                 resolve(DynamoDBUser.prototype.getProperties(res.Item));

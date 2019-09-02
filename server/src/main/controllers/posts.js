@@ -53,6 +53,8 @@ const createPost = async req => {
     const createdTime = Date.now();
     const author = req.user.id;
 
+    //TODO: check if post already exists
+
     //check that all media files exist
     try {
         const validMedia = (
@@ -126,7 +128,7 @@ const getPost = async req => {
         postId
     } = req.params;
     try {
-        const post = await db.post.get(postId);
+        const post = await db.post.get(postId); //TODO: get this working
         return res => {
             console.log(`Post retrieved, id: ${postId}`);
             res.send(post);
