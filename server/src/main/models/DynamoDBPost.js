@@ -58,7 +58,7 @@ function DynamoDBPost(p) {
     }
 
     this.Published = {
-        B: (p.published || false).toString()
+        BOOL: p.published || false
     };
 
     if (p.thumnailPath) {
@@ -95,7 +95,7 @@ DynamoDBPost.prototype.getProperties = function (other) {
         author: post.Author.S,
         createdTime: Number(post.CreatedTime.N),
         category: post.Category.S,
-        published: Boolean(post.Published.B),
+        published: post.Published.BOOL,
         thumnailPath: post.ThumnailPath.S,
         bodyPath: post.BodyPath.S,
         mediaPaths: JSON.parse(post.MediaPaths.S)

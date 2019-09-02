@@ -69,7 +69,7 @@ describe('models', function () {
                 });
                 expect(Post).to.have.property('Published');
                 expect(Post.Published).to.deep.equal({
-                    "B": `${post.published}`
+                    "BOOL": post.published
                 });
                 expect(Post).to.have.property('ThumnailPath');
                 expect(Post.ThumnailPath).to.deep.equal({
