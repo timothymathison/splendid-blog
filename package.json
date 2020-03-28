@@ -10,11 +10,11 @@
   "scripts": {
     "create:infrastructure": "aws cloudformation create-stack --stack-name splendidblog --template-body file://./infrastructure/aws.json --profile splendid-blog",
     "create:lambda-handler": "claudia generate-serverless-express-proxy --express-module server --profile splendid-blog",
-    "create:lambda-instance": "claudia create --handler lambda.handler --timeout 20 --deploy-proxy-api --region us-east-2 --no-optional-dependencies --role splendid-blog-lambda --profile splendid-blog --version production --set-env-from-json .env.production.json",
+    "create:lambda-instance": "claudia create --handler lambda.handler --timeout 20 --deploy-proxy-api --region us-east-2 --no-optional-dependencies --role splendid-blog-lambda --profile splendid-blog --version production --set-env-from-json server/config/.env.production.json",
     "update:infrastructure": "aws cloudformation update-stack --stack-name splendidblog --template-body file://./infrastructure/aws.json --profile splendid-blog",
     "install:client": "cd client && npm install && cd ../",
     "build:client": "cd client && npm run build && cd ../",
-    "deploy": "claudia update --profile splendid-blog --version production --no-optional-dependencies --update-env-from-json .env.production.json",
+    "deploy": "claudia update --profile splendid-blog --version production --no-optional-dependencies --runtime nodejs12.x --update-env-from-json server/config/.env.production.json",
     "start": "concurrently \"npm:start:server\" \"npm:start:client\"",
     "start:test": "npm run build:client && NODE_ENV=test npm run server",
     "start:server": "nodemon server/src/main/server.local.js",
