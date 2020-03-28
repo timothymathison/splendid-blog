@@ -1,0 +1,626 @@
+{
+	"info": {
+		"_postman_id": "1cf074cc-1967-4c2e-96fd-d337adcfde34",
+		"name": "Splendid Blog",
+		"description": "Use to test splendid-blog api.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f4c8631f-3147-4f74-adcf-37d3b2bb8844",
+								"exec": [
+									"pm.test('response is ok', function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response header has correct content-type', function() {",
+									"    pm.response.to.have.header('Content-Type');",
+									"    pm.response.to.be.header('Content-Type', 'application/json; charset=utf-8');",
+									"});",
+									"",
+									"pm.test('response body has bearer access token and expiration time', function() {",
+									"    var res = pm.response.json();",
+									"    pm.response.to.have.jsonBody('access_token');",
+									"    pm.response.to.have.jsonBody('expires_in');",
+									"    pm.expect(res.token_type).to.equal('Bearer');",
+									"    ",
+									"    pm.environment.set('user_token', res.access_token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"{{user_id}}\",\n    \"password\": \"{{user_pass}}\"\n}"
+						},
+						"url": {
+							"raw": "{{address}}/api/auth/login",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "List Categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b1b08224-f70c-4d09-822d-976f256c2085",
+								"exec": [
+									"",
+									"pm.test('response is ok', function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response header has correct content-type', function() {",
+									"    pm.response.to.have.header('Content-Type');",
+									"    pm.response.to.be.header('Content-Type', 'application/json; charset=utf-8');",
+									"});",
+									"",
+									"pm.test('response body lists post category options', function() {",
+									"    var correctCategories = [",
+									"        { id: 'life', label: 'Life' },",
+									"        { id: 'food', label: 'Food' },",
+									"        { id: 'inspiration', label: 'Inspiration' }",
+									"    ];",
+									"    var categories = pm.response.json();",
+									"    pm.expect(categories).to.deep.equal(correctCategories);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{address}}/api/categories/list",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Media",
+			"item": [
+				{
+					"name": "Upload Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5f61f091-3f45-4935-9294-969ab9f839af",
+								"exec": [
+									"pm.test('upload success - response no content', function() {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "image/jpg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "./server/src/test/media/p1.jpg" 
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/media/p1/mclaren_p1.jpg",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"media",
+								"p1",
+								"mclaren_p1.jpg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f161259c-a4c2-4f4a-b578-e7d9108b811e",
+								"exec": [
+									"pm.test('upload success - response no content', function() {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "image/jpg"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "./server/src/test/media/p1.jpg" 
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/media/p1/mclaren_p1.jpg",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"media",
+								"p1",
+								"mclaren_p1.jpg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Image Exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5f61f091-3f45-4935-9294-969ab9f839af",
+								"exec": [
+									"pm.test('upload failed - response bad request', function() {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test('response header has correct content-type', function() {",
+									"    pm.response.to.have.header('Content-Type');",
+									"    pm.response.to.be.header('Content-Type', 'application/json; charset=utf-8');",
+									"});",
+									"",
+									"pm.test('response body has message', function() {",
+									"    var res = pm.response.json();",
+									"    pm.response.to.have.jsonBody('message');",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "image/jpg"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "./server/src/test/media/p1.jpg" 
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/media/p1/mclaren_p1.jpg",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"media",
+								"p1",
+								"mclaren_p1.jpg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "396c9300-c896-4b71-9d9a-61d8632fdea8",
+								"exec": [
+									"pm.test('response is ok', function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response header has correct content-type', function() {",
+									"    pm.response.to.have.header('Content-Type');",
+									"    pm.response.to.be.header('Content-Type', 'image/jpg');",
+									"});",
+									"",
+									"setTimeout(function(){}, 2000); //wait to let previous requests take effect",
+									"",
+									"pm.test('response body exists', function() {",
+									"     pm.response.to.be.withBody;",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ad0e769a-6f62-4823-834b-1445116c7154",
+								"exec": [
+									"setTimeout(function(){}, 2000); //wait to let previous requests take effect"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "image/*",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{address}}/api/media/p1/mclaren_p1.jpg",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"media",
+								"p1",
+								"mclaren_p1.jpg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "266040b6-d584-4086-b302-0bf0889b2c05",
+								"exec": [
+									"pm.test('delete success - response no content', function() {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "image/jpg",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{address}}/api/media/p1/mclaren_p1.jpg",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"media",
+								"p1",
+								"mclaren_p1.jpg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Image without Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f161259c-a4c2-4f4a-b578-e7d9108b811e",
+								"exec": [
+									"pm.test('upload failed - missing auth', function() {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "image/jpg"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "./server/src/test/media/p1.jpg" 
+							}
+						},
+						"url": {
+							"raw": "{{address}}/api/media/p1/mclaren_p1.jpg",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"media",
+								"p1",
+								"mclaren_p1.jpg"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Create Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "347beeda-e4e6-453e-a691-69dd23cbaa1a",
+								"exec": [
+									"pm.test('response is ok', function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('response header has correct content-type', function() {",
+									"    pm.response.to.have.header('Content-Type');",
+									"    pm.response.to.be.header('Content-Type', 'application/json; charset=utf-8');",
+									"});",
+									"",
+									"pm.test.skip('response body is correct'); //TODO: return new post details"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"How to make bannana bread\",\n\t\"htmlBody\": \"<p>paragraph about making bannana bread</p>\"\n}"
+						},
+						"url": {
+							"raw": "{{address}}/api/posts/create/",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								"create",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ping",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bd05f1d2-ddc9-4d3a-9e0b-022563fa50d9",
+						"exec": [
+							"",
+							"pm.test('response is ok', function() {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('response header has correct content-type', function() {",
+							"    pm.response.to.have.header('Content-Type');",
+							"    pm.response.to.be.header('Content-Type', 'application/json; charset=utf-8');",
+							"});",
+							"",
+							"pm.test('response body lists all routes', function() {",
+							"    var correctRoutes = [",
+							"            {path: '/ping'},",
+							"            {path: '/categories/list', method: 'GET'},",
+							"            {path: '/auth/login', method: 'POST'},",
+							"            {path: '/posts/create', method: \"POST\"}",
+							"        ];",
+							"    var routes = pm.response.json().routes;",
+							"    pm.expect(routes).to.deep.equal(correctRoutes);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{address}}/api/ping",
+					"host": [
+						"{{address}}"
+					],
+					"path": [
+						"api",
+						"ping"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "c9f4fb25-1551-40ba-91c4-9e0e674f3056",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "e1052fc9-0dd9-4477-82f7-4e378f466010",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,15 @@
+.icon-data {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.icon {
+	display: inline-block;
+	color: inherit;
+    width: 1.5em;
+    height: 1em;
+    margin-bottom: -0.05em;
+	fill: currentColor;
+}

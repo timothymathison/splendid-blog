@@ -1,0 +1,11 @@
+{
+  "lambda": {
+    "role": "splendid-blog-lambda",
+    "name": "splendid-blog",
+    "region": "us-east-2",
+    "sharedRole": true
+  },
+  "api": {
+    "id": "bb6eytcmqb"
+  }
+}

@@ -1,33 +1,16 @@
-import React, {Component} from 'react';
+import React from 'react';
+import {Route, Switch} from 'react-router-dom';
 
-const basePath = process.env.PUBLIC_URL;
+// import api from '../utils/api';
 
-class Posts extends Component {
-    constructor(props) {
-        super(props);
+import ListPosts from './listposts';
+import EditPost from './editpost';
 
-        this.callBackendAPI()
-            .then(res => console.log({ data: res.msg, info: res.envValues }))
-            .catch(err => console.error(err));
-    }
-
-    callBackendAPI = async () => {
-        const response = await fetch(`${basePath}/api`);
-        const body = await response.json();
-
-        if (response.status !== 200) {
-            throw Error(body.message)
-        }
-        return body;
-    };
-
-    render() {
-        return(
-            <div className={"body"}>
-                <h1>Posts page</h1>
-            </div>
-        );
-    }
-}
+const Posts = (props) => (
+    <Switch>
+        <Route path={`${props.match.path}/create`} component={EditPost}/>
+        <Route path={`${props.match.path}/`} component={ListPosts}/>
+    </Switch>
+);
 
 export default Posts

@@ -1,36 +1,49 @@
 {
   "name": "splendid-blog",
   "version": "0.1.0",
-  "description": "Uses ReactJS and Express for NodeJS to create a dynamic blog website from which April Mathison can express her thoughts and creativity!",
+  "description": "Uses ReactJS and Express for NodeJS to create a dynamic blog website",
   "main": "lambda.js",
   "files": [
-    "server.js",
+    "server/src/main/",
     "client/build/"
   ],
   "scripts": {
-    "test-pack": "claudia pack",
-    "init-lambda": "claudia generate-serverless-express-proxy --express-module server",
-    "deploy-lambda": "claudia create --handler lambda.handler --timeout 20 --deploy-proxy-api --region us-east-2 --no-optional-dependencies --role splendid-blog-lambda --version production --set-env-from-json .env.production.json",
-    "deploy-update": "npm run build-client && claudia update --version production --no-optional-dependencies --update-env-from-json .env.production.json",
-    "start": "concurrently \"npm:server\" \"npm:client\"",
-    "start-prod": "npm run build-client && NODE_ENV=production node server.local.js",
-    "server": "node server.local.js",
-    "client": "cd client && npm start",
-    "build-client": "cd client && npm run build && cd ../",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "create:infrastructure": "aws cloudformation create-stack --stack-name splendidblog --template-body file://./infrastructure/aws.json --profile splendid-blog",
+    "create:lambda-handler": "claudia generate-serverless-express-proxy --express-module server --profile splendid-blog",
+    "create:lambda-instance": "claudia create --handler lambda.handler --timeout 20 --deploy-proxy-api --region us-east-2 --no-optional-dependencies --role splendid-blog-lambda --profile splendid-blog --version production --set-env-from-json server/config/.env.production.json",
+    "update:infrastructure": "aws cloudformation update-stack --stack-name splendidblog --template-body file://./infrastructure/aws.json --profile splendid-blog",
+    "install:client": "cd client && npm install && cd ../",
+    "build:client": "cd client && npm run build && cd ../",
+    "deploy": "claudia update --profile splendid-blog --version production --no-optional-dependencies --runtime nodejs12.x --update-env-from-json server/config/.env.production.json",
+    "start": "concurrently \"npm:start:server\" \"npm:start:client\"",
+    "start:test": "npm run build:client && NODE_ENV=test npm run server",
+    "start:server": "nodemon server/src/main/server.local.js",
+    "start:client": "cd client && npm start",
+    "test": "npm run test:server",
+    "test:server": "npm run test:server:unit && npm run test:server:api",
+    "test:server:unit": "NODE_ENV=test mocha server/src/test/unit.test.js",
+    "test:server:api": "NODE_ENV=test node server/src/test/api.test.js",
+    "test:pack": "claudia pack"
   },
   "dependencies": {
-    "aws-serverless-express": "^3.2.0",
-    "express": "^4.16.3"
+    "aws-serverless-express": "^3.3.5",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.3.0",
+    "shortid": "^2.2.14"
   },
   "optionalDependencies": {
-    "aws-sdk": "^2.286.2",
-    "dotenv": "^6.0.0"
+    "aws-sdk": "^2.286.2"
   },
   "devDependencies": {
-    "claudia": "^5.1.0",
+    "chai": "^4.2.0",
+    "claudia": "^5.12.0",
     "concurrently": "^3.6.1",
-    "dotenv-json": "^1.0.0"
+    "dotenv-json": "^1.0.0",
+    "mocha": "^7.1.1",
+    "newman": "^4.6.0",
+    "nodemon": "^2.0.2"
   },
   "repository": {
     "type": "git",
