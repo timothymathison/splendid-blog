@@ -41,7 +41,7 @@
     "claudia": "^5.12.0",
     "concurrently": "^3.6.1",
     "dotenv-json": "^1.0.0",
-    "mocha": "^7.1.1",
+    "mocha": "^10.2.0",
     "newman": "^4.6.0",
     "nodemon": "^2.0.2"
   },
